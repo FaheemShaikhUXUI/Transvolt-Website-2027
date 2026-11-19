@@ -1,0 +1,23 @@
+================================================================================
+TRANSVOLT WEBSITE 2027 — PRODUCTION DEPLOYMENT LINKS
+================================================================================
+
+1. Live Public Website (Anyone can open & share):
+https://transvolt-website-2027.vercel.app
+
+2. Direct Candidate Hiring Form Portal:
+https://transvolt-website-2027.vercel.app/?page=hiring-form
+
+3. Official GitHub Repository:
+https://github.com/FaheemShaikhUXUI/Transvolt-Website-2027
+
+4. Vercel Project Dashboard:
+https://vercel.com/design25/transvolt-website-2027
+
+================================================================================
+Project: transvolt-website-2027
+Team: design25
+Framework: Vite + React
+Status: LIVE & READY (200 OK)
+Deployed on: 19-Nov-2026
+================================================================================
