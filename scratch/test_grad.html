@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Venom Gradient Test</title>
+</head>
+<body style="background:#f8fafc; margin:0; display:flex; justify-content:center; align-items:center; height:100vh;">
+  <svg width="400" height="400" viewBox="0 0 400 400">
+    <defs>
+      <!-- userSpaceOnUse linear gradient covers the entire fluid bounding area -->
+      <linearGradient id="brand-grad" gradientUnits="userSpaceOnUse" x1="150" y1="30" x2="250" y2="280">
+        <stop offset="0%" stop-color="#4472C4" />
+        <stop offset="45%" stop-color="#548235" />
+        <stop offset="100%" stop-color="#4472C4" />
+      </linearGradient>
+
+      <!-- Specular Highlight Blur Filter -->
+      <filter id="venom-highlight-blur" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="1.6" />
+      </filter>
+    </defs>
+
+    <!-- Test paths with userSpaceOnUse gradient -->
+    <path d="M 160 50 Q 140 150 190 250" stroke="url(#brand-grad)" stroke-width="5" fill="none" />
+    <path d="M 240 50 Q 260 150 200 250" stroke="url(#brand-grad)" stroke-width="5" fill="none" />
+    <path d="M 150 150 Q 200 180 250 150" stroke="url(#brand-grad)" stroke-width="3" fill="none" />
+
+    <!-- Test blurred highlight -->
+    <g filter="url(#venom-highlight-blur)">
+      <path d="M 158 50 Q 138 150 188 250" stroke="rgba(255,255,255,0.9)" stroke-width="2.2" fill="none" />
+    </g>
+  </svg>
+</body>
+</html>
+

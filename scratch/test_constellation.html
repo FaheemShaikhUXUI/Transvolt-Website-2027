@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Constellation Button Test</title>
+  <style>
+    body {
+      background: #f1f5f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+  <div style="position:relative; width:460px; height:460px; display:flex; align-items:center; justify-content:center;">
+    <canvas id="canvas" width="460" height="460" style="position:absolute; left:0; top:0;"></canvas>
+    <div style="position:relative; z-index:20; background:#548235; color:white; font-size:12px; font-weight:600; padding:8px 20px; border-radius:9999px; pointer-events:none; box-shadow:0 4px 12px rgba(84,130,53,0.3);">
+      Contact Us
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const W = 460;
+    const H = 460;
+    const cx = W / 2;
+    const cy = H / 2;
+
+    const BASE_W = 88;
+    const BASE_H = 30;
+
+    // Initialize 24 constellation particles around the button
+    const NUM_DOTS = 24;
+    const dots = [];
+
+    for (let i = 0; i < NUM_DOTS; i++) {
+      const angle = (i / NUM_DOTS) * Math.PI * 2 + (Math.random() * 0.3 - 0.15);
+      // Orbit distance: ellipses around pill
+      const rx = (BASE_W / 2) + 12 + Math.random() * 32;
+      const ry = (BASE_H / 2) + 10 + Math.random() * 26;
+      dots.push({
+        baseAngle: angle,
+        orbitRx: rx,
+        orbitRy: ry,
+        speed: (0.004 + Math.random() * 0.006) * (Math.random() > 0.5 ? 1 : -1),
+        currentAngle: angle,
+        x: cx + Math.cos(angle) * rx,
+        y: cy + Math.sin(angle) * ry,
+        vx: 0,
+        vy: 0,
+        r: 1.0 + Math.random() * 1.2,
+        color: Math.random() > 0.4 ? '#86efac' : (Math.random() > 0.5 ? '#ffffff' : '#548235'),
+        phase: Math.random() * Math.PI * 2
+      });
+    }
+
+    // Simulated cursor position
+    let mx = cx - 35;
+    let my = cy + 55;
+
+    function render() {
+      ctx.clearRect(0, 0, W, H);
+      const time = performance.now() * 0.001;
+
+      const mouseDist = Math.hypot(mx - cx, my - cy);
+      const isNear = mouseDist < 160;
+
+      // Update dots
+      dots.forEach((d, idx) => {
+        d.currentAngle += d.speed;
+
+        // Base floating target position
+        const wobble = Math.sin(time * 2 + d.phase) * 3;
+        const targetX = cx + Math.cos(d.currentAngle) * (d.orbitRx + wobble);
+        const targetY = cy + Math.sin(d.currentAngle) * (d.orbitRy + wobble);
+
+        // Electric attraction towards cursor
+        const dCursor = Math.hypot(mx - d.x, my - d.y);
+        let pullX = 0;
+        let pullY = 0;
+
+        if (isNear && dCursor < 135) {
+          const pullPower = Math.pow((135 - dCursor) / 135, 1.45) * 22;
+          const jitter = (Math.random() - 0.5) * 1.5;
+          pullX = ((mx - d.x) / (dCursor + 0.1)) * pullPower + jitter;
+          pullY = ((my - d.y) / (dCursor + 0.1)) * pullPower + jitter;
+        }
+
+        const ax = (targetX + pullX - d.x) * 0.12;
+        const ay = (targetY + pullY - d.y) * 0.12;
+
+        d.vx = (d.vx + ax) * 0.74;
+        d.vy = (d.vy + ay) * 0.74;
+        d.x += d.vx;
+        d.y += d.vy;
+      });
+
+      // 1. Draw Constellation Inter-Connecting Lines between neighboring dots
+      for (let i = 0; i < dots.length; i++) {
+        for (let j = i + 1; j < dots.length; j++) {
+          const d1 = dots[i];
+          const d2 = dots[j];
+          const dist = Math.hypot(d1.x - d2.x, d1.y - d2.y);
+          const maxDist = isNear ? 55 : 42;
+
+          if (dist < maxDist) {
+            const alpha = Math.pow((maxDist - dist) / maxDist, 1.2) * (isNear ? 0.75 : 0.45);
+            ctx.beginPath();
+            ctx.moveTo(d1.x, d1.y);
+            ctx.lineTo(d2.x, d2.y);
+            ctx.strokeStyle = `rgba(134, 239, 172, ${alpha.toFixed(2)})`;
+            ctx.lineWidth = 0.8;
+            ctx.stroke();
+          }
+        }
+      }
+
+      // 2. Draw Electric Arcs Attracting Directly to Cursor
+      if (isNear) {
+        dots.forEach((d, idx) => {
+          const dCursor = Math.hypot(mx - d.x, my - d.y);
+          if (dCursor < 85) {
+            const alpha = Math.pow((85 - dCursor) / 85, 1.2) * 0.85;
+            // Electric lightning jitter arc
+            const midX = (d.x + mx) / 2 + (Math.sin(time * 35 + idx) * 3);
+            const midY = (d.y + my) / 2 + (Math.cos(time * 28 + idx) * 3);
+
+            ctx.save();
+            ctx.beginPath();
+            ctx.moveTo(d.x, d.y);
+            ctx.quadraticCurveTo(midX, midY, mx, my);
+            ctx.strokeStyle = `rgba(134, 239, 172, ${alpha.toFixed(2)})`;
+            ctx.lineWidth = 0.95;
+            ctx.shadowColor = 'rgba(84, 130, 53, 0.8)';
+            ctx.shadowBlur = 6;
+            ctx.stroke();
+            ctx.restore();
+          }
+        });
+      }
+
+      // 3. Draw Micro Dots
+      dots.forEach((d) => {
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+        ctx.fillStyle = d.color;
+        ctx.shadowColor = d.color;
+        ctx.shadowBlur = isNear ? 6 : 3;
+        ctx.fill();
+        ctx.restore();
+      });
+
+      requestAnimationFrame(render);
+    }
+
+    render();
+  </script>
+</body>
+</html>
+

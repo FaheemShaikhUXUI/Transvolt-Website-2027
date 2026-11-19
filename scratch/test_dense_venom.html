@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Venom Asymmetric Dense Fluid Max</title>
+  <style>
+    body {
+      background: #f8fafc;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+  <div style="position:relative; width:460px; height:460px;">
+    <svg id="svg" width="460" height="460" style="position:absolute; left:0; top:0; overflow:visible;">
+      <defs>
+        <!-- Transvolt Brand Gradient in userSpaceOnUse -->
+        <linearGradient id="venom-brand-grad" gradientUnits="userSpaceOnUse" x1="140" y1="30" x2="280" y2="300">
+          <stop offset="0%" stop-color="#4472C4" />
+          <stop offset="48%" stop-color="#548235" />
+          <stop offset="100%" stop-color="#4472C4" />
+        </linearGradient>
+
+        <!-- Specular Highlight Blur Filter for soft wet glossy liquid reflections -->
+        <filter id="venom-highlight-blur" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="1.6" />
+        </filter>
+
+        <!-- Fluid Fusion Gooey Filter for the molten canopy and primary trunks -->
+        <filter id="venom-goo-filter" x="-30%" y="-30%" width="160%" height="160%">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="3.2" result="blur" />
+          <feColorMatrix
+            in="blur"
+            mode="matrix"
+            values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7"
+            result="goo"
+          />
+          <feBlend in="SourceGraphic" in2="goo" />
+        </filter>
+      </defs>
+
+      <!-- Gooey Base Layer: Main molten canopy and primary trunks -->
+      <g filter="url(#venom-goo-filter)">
+        <rect x="160" y="30" width="140" height="38" rx="19" fill="url(#venom-brand-grad)" />
+        <path id="canopy" fill="url(#venom-brand-grad)" />
+        <path id="col1" stroke="url(#venom-brand-grad)" stroke-linecap="round" fill="none" />
+        <path id="col2" stroke="url(#venom-brand-grad)" stroke-linecap="round" fill="none" />
+        <path id="col3Stem" stroke="url(#venom-brand-grad)" stroke-linecap="round" fill="none" />
+        <path id="col3a" stroke="url(#venom-brand-grad)" stroke-linecap="round" fill="none" />
+        <path id="col3b" stroke="url(#venom-brand-grad)" stroke-linecap="round" fill="none" />
+        <path id="colMidRight" stroke="url(#venom-brand-grad)" stroke-linecap="round" fill="none" />
+        <path id="col4" stroke="url(#venom-brand-grad)" stroke-linecap="round" fill="none" />
+      </g>
+
+      <!-- Dense Secondary & Tertiary Micro-Branches (Sharp & Viscous) -->
+      <g id="denseMicroBranches"></g>
+
+      <!-- 1px Micro-Filament Pointer Connectivity directly at cursor tip -->
+      <g id="pointerMicroFilaments"></g>
+
+      <!-- Blurred White Specular Highlights (Soft wet glossy liquid glaze) -->
+      <g filter="url(#venom-highlight-blur)" id="blurredHighlights"></g>
+    </svg>
+
+    <!-- The Button -->
+    <div id="btn" style="position:absolute; left:160px; top:30px; z-index:10; width:140px; height:38px; border-radius:9999px; background:linear-gradient(135deg, #4472C4, #548235); display:flex; align-items:center; justify-content:center; color:white; font-size:13px; font-weight:600; box-shadow: inset 0 1.5px 2px rgba(255,255,255,0.7), inset 0 -2px 3px rgba(0,0,0,0.35), 0 8px 24px rgba(68,114,196,0.35);">
+      Contact Us &#x2197;
+    </div>
+  </div>
+
+  <script>
+    const pillLeft = 160;
+    const pillTop = 30;
+    const btnW = 140;
+    const btnH = 38;
+    const pillRight = pillLeft + btnW;
+    const pillBottom = pillTop + btnH;
+    const pillCenter = { x: pillLeft + btnW / 2, y: pillTop + btnH / 2 };
+
+    // Dynamic state
+    let curX = pillCenter.x - 38;
+    let curY = pillBottom + 195;
+    let r = 1.0;
+    let time = 2.4;
+
+    const cubicBezier = (p0, p1, p2, p3, t) => {
+      const mt = 1 - t;
+      return {
+        x: mt * mt * mt * p0.x + 3 * mt * mt * t * p1.x + 3 * mt * t * t * p2.x + t * t * t * p3.x,
+        y: mt * mt * mt * p0.y + 3 * mt * mt * t * p1.y + 3 * mt * t * t * p2.y + t * t * t * p3.y,
+      };
+    };
+
+    function update() {
+      // Canopy
+      const sagX = Math.max(pillLeft + 25, Math.min(pillRight - 25, pillLeft + (btnW * 0.5) + (curX - pillCenter.x) * 0.55));
+      const sagDepth = Math.min(46, Math.max(10, (curY - pillBottom) * 0.26)) * r;
+
+      const canopyD = `
+        M ${pillLeft + 14} ${pillBottom - 1}
+        Q ${sagX - 32} ${pillBottom + sagDepth * 0.75} ${sagX} ${pillBottom + sagDepth}
+        Q ${sagX + 38} ${pillBottom + sagDepth * 0.65} ${pillRight - 14} ${pillBottom - 1}
+        Z
+      `;
+      document.getElementById('canopy').setAttribute('d', canopyD);
+
+      // Micro-wave sinusoidal harmonics
+      const mw1 = Math.sin(time * 5 + 0.5) * 2.0 * r;
+      const mw2 = Math.cos(time * 4.5 + 1.2) * 1.8 * r;
+      const mw3 = Math.sin(time * 6 + 2.0) * 1.6 * r;
+      const mw4 = Math.cos(time * 5.2 + 2.8) * 1.8 * r;
+
+      // 1. Column 1: Outer Left
+      const col1_p0 = { x: pillLeft + btnW * 0.12, y: pillBottom + 6 };
+      const col1_p1 = { x: col1_p0.x - 24 * r + mw1, y: col1_p0.y + (curY - col1_p0.y) * 0.38 };
+      const col1_p2 = { x: curX - 25 * r + mw2, y: col1_p0.y + (curY - col1_p0.y) * 0.75 };
+      const col1_p3 = { x: curX - 3.5 * r, y: curY - 14 * r };
+      const col1D = `M ${col1_p0.x} ${col1_p0.y} C ${col1_p1.x} ${col1_p1.y}, ${col1_p2.x} ${col1_p2.y}, ${col1_p3.x} ${col1_p3.y}`;
+      const col1 = document.getElementById('col1');
+      col1.setAttribute('d', col1D);
+      col1.setAttribute('stroke-width', `${Math.max(1, 5.5 * r)}`);
+
+      // 2. Column 2: Mid Left
+      const col2_p0 = { x: pillLeft + btnW * 0.28, y: pillBottom + sagDepth * 0.5 + 4 };
+      const col2_p1 = { x: col2_p0.x - 14 * r + mw2, y: col2_p0.y + (curY - col2_p0.y) * 0.40 };
+      const col2_p2 = { x: curX - 12 * r + mw3, y: col2_p0.y + (curY - col2_p0.y) * 0.72 };
+      const col2_p3 = { x: curX - 1.5 * r, y: curY - 12 * r };
+      const col2D = `M ${col2_p0.x} ${col2_p0.y} C ${col2_p1.x} ${col2_p1.y}, ${col2_p2.x} ${col2_p2.y}, ${col2_p3.x} ${col2_p3.y}`;
+      const col2 = document.getElementById('col2');
+      col2.setAttribute('d', col2D);
+      col2.setAttribute('stroke-width', `${Math.max(1, 6.0 * r)}`);
+
+      // 3. Column 3: Center heavy trunk splitting at 44%
+      const col3_p0 = { x: sagX, y: pillBottom + sagDepth };
+      const splitY = col3_p0.y + (curY - col3_p0.y) * 0.44;
+      const splitX = col3_p0.x + (curX - col3_p0.x) * 0.44;
+      const col3StemD = `M ${col3_p0.x} ${col3_p0.y} L ${splitX} ${splitY}`;
+      const col3Stem = document.getElementById('col3Stem');
+      col3Stem.setAttribute('d', col3StemD);
+      col3Stem.setAttribute('stroke-width', `${Math.max(2, 11.0 * r)}`);
+
+      // Col 3a: Left split
+      const col3a_p1 = { x: splitX - 10 * r + mw1, y: splitY + (curY - splitY) * 0.45 };
+      const col3a_p2 = { x: curX - 4 * r + mw3, y: splitY + (curY - splitY) * 0.75 };
+      const col3a_p3 = { x: curX, y: curY - 12 * r };
+      const col3aD = `M ${splitX} ${splitY} C ${col3a_p1.x} ${col3a_p1.y}, ${col3a_p2.x} ${col3a_p2.y}, ${col3a_p3.x} ${col3a_p3.y}`;
+      const col3a = document.getElementById('col3a');
+      col3a.setAttribute('d', col3aD);
+      col3a.setAttribute('stroke-width', `${Math.max(1, 5.5 * r)}`);
+
+      // Col 3b: Right split
+      const col3b_p1 = { x: splitX + 10 * r + mw2, y: splitY + (curY - splitY) * 0.45 };
+      const col3b_p2 = { x: curX + 6 * r + mw4, y: splitY + (curY - splitY) * 0.75 };
+      const col3b_p3 = { x: curX + 2 * r, y: curY - 12 * r };
+      const col3bD = `M ${splitX} ${splitY} C ${col3b_p1.x} ${col3b_p1.y}, ${col3b_p2.x} ${col3b_p2.y}, ${col3b_p3.x} ${col3b_p3.y}`;
+      const col3b = document.getElementById('col3b');
+      col3b.setAttribute('d', col3bD);
+      col3b.setAttribute('stroke-width', `${Math.max(1, 5.0 * r)}`);
+
+      // 4. Column Mid-Right: Interior branch starting at 62%
+      const colMR_p0 = { x: pillLeft + btnW * 0.62, y: pillBottom + sagDepth * 0.6 };
+      const colMR_p1 = { x: colMR_p0.x + 8 * r + mw4, y: colMR_p0.y + (curY - colMR_p0.y) * 0.42 };
+      const colMR_p2 = { x: curX + 10 * r + mw2, y: colMR_p0.y + (curY - colMR_p0.y) * 0.74 };
+      const colMR_p3 = { x: curX + 2.5 * r, y: curY - 13 * r };
+      const colMRD = `M ${colMR_p0.x} ${colMR_p0.y} C ${colMR_p1.x} ${colMR_p1.y}, ${colMR_p2.x} ${colMR_p2.y}, ${colMR_p3.x} ${colMR_p3.y}`;
+      const colMR = document.getElementById('colMidRight');
+      colMR.setAttribute('d', colMRD);
+      colMR.setAttribute('stroke-width', `${Math.max(1, 5.0 * r)}`);
+
+      // 5. Column 4: Sweeping Far Right Branch
+      const col4_p0 = { x: pillLeft + btnW * 0.84, y: pillBottom + 6 };
+      const col4_p1 = { x: col4_p0.x - 22 * r + mw3, y: col4_p0.y + (curY - col4_p0.y) * 0.38 };
+      const col4_p2 = { x: curX + 22 * r + mw1, y: col4_p0.y + (curY - col4_p0.y) * 0.72 };
+      const col4_p3 = { x: curX + 4.0 * r, y: curY - 14 * r };
+      const col4D = `M ${col4_p0.x} ${col4_p0.y} C ${col4_p1.x} ${col4_p1.y}, ${col4_p2.x} ${col4_p2.y}, ${col4_p3.x} ${col4_p3.y}`;
+      const col4 = document.getElementById('col4');
+      col4.setAttribute('d', col4D);
+      col4.setAttribute('stroke-width', `${Math.max(1, 5.5 * r)}`);
+
+      // Parametric sample points along all columns
+      const pt1_20 = cubicBezier(col1_p0, col1_p1, col1_p2, col1_p3, 0.20);
+      const pt1_38 = cubicBezier(col1_p0, col1_p1, col1_p2, col1_p3, 0.38);
+      const pt1_58 = cubicBezier(col1_p0, col1_p1, col1_p2, col1_p3, 0.58);
+      const pt1_78 = cubicBezier(col1_p0, col1_p1, col1_p2, col1_p3, 0.78);
+      const pt1_92 = cubicBezier(col1_p0, col1_p1, col1_p2, col1_p3, 0.92);
+
+      const pt2_18 = cubicBezier(col2_p0, col2_p1, col2_p2, col2_p3, 0.18);
+      const pt2_36 = cubicBezier(col2_p0, col2_p1, col2_p2, col2_p3, 0.36);
+      const pt2_56 = cubicBezier(col2_p0, col2_p1, col2_p2, col2_p3, 0.56);
+      const pt2_76 = cubicBezier(col2_p0, col2_p1, col2_p2, col2_p3, 0.76);
+      const pt2_90 = cubicBezier(col2_p0, col2_p1, col2_p2, col2_p3, 0.90);
+
+      const pt3a_25 = cubicBezier({ x: splitX, y: splitY }, col3a_p1, col3a_p2, col3a_p3, 0.25);
+      const pt3a_50 = cubicBezier({ x: splitX, y: splitY }, col3a_p1, col3a_p2, col3a_p3, 0.50);
+      const pt3a_75 = cubicBezier({ x: splitX, y: splitY }, col3a_p1, col3a_p2, col3a_p3, 0.75);
+
+      const pt3b_25 = cubicBezier({ x: splitX, y: splitY }, col3b_p1, col3b_p2, col3b_p3, 0.25);
+      const pt3b_50 = cubicBezier({ x: splitX, y: splitY }, col3b_p1, col3b_p2, col3b_p3, 0.50);
+      const pt3b_75 = cubicBezier({ x: splitX, y: splitY }, col3b_p1, col3b_p2, col3b_p3, 0.75);
+
+      const ptMR_22 = cubicBezier(colMR_p0, colMR_p1, colMR_p2, colMR_p3, 0.22);
+      const ptMR_45 = cubicBezier(colMR_p0, colMR_p1, colMR_p2, colMR_p3, 0.45);
+      const ptMR_70 = cubicBezier(colMR_p0, colMR_p1, colMR_p2, colMR_p3, 0.70);
+
+      const pt4_18 = cubicBezier(col4_p0, col4_p1, col4_p2, col4_p3, 0.18);
+      const pt4_38 = cubicBezier(col4_p0, col4_p1, col4_p2, col4_p3, 0.38);
+      const pt4_60 = cubicBezier(col4_p0, col4_p1, col4_p2, col4_p3, 0.60);
+      const pt4_82 = cubicBezier(col4_p0, col4_p1, col4_p2, col4_p3, 0.82);
+
+      // Dense secondary branches & cross-filaments (20 organic web strands)
+      const denseGroup = document.getElementById('denseMicroBranches');
+      denseGroup.innerHTML = '';
+
+      const branches = [
+        // Left zone bridges (Col 1 to Col 2)
+        { d: `M ${pt1_20.x} ${pt1_20.y} Q ${(pt1_20.x+pt2_18.x)/2 - 2 + mw1} ${(pt1_20.y+pt2_18.y)/2 + 5*r} ${pt2_18.x} ${pt2_18.y}`, w: 3.2 * r },
+        { d: `M ${pt1_38.x} ${pt1_38.y} Q ${(pt1_38.x+pt2_36.x)/2 + mw2} ${(pt1_38.y+pt2_36.y)/2 + 4*r} ${pt2_36.x} ${pt2_36.y}`, w: 2.8 * r },
+        { d: `M ${pt1_58.x} ${pt1_58.y} Q ${(pt1_58.x+pt2_56.x)/2 + 1 + mw3} ${(pt1_58.y+pt2_56.y)/2 + 3*r} ${pt2_56.x} ${pt2_56.y}`, w: 2.5 * r },
+        { d: `M ${pt1_78.x} ${pt1_78.y} Q ${(pt1_78.x+pt2_76.x)/2} ${(pt1_78.y+pt2_76.y)/2 + 2.5*r} ${pt2_76.x} ${pt2_76.y}`, w: 2.0 * r },
+        { d: `M ${pt1_92.x} ${pt1_92.y} Q ${(pt1_92.x+pt2_90.x)/2} ${(pt1_92.y+pt2_90.y)/2 + 1.5*r} ${pt2_90.x} ${pt2_90.y}`, w: 1.5 * r },
+
+        // Center-left zone bridges (Col 2 to Col 3)
+        { d: `M ${pt2_18.x} ${pt2_18.y} Q ${(pt2_18.x+splitX)/2 - 2 + mw3} ${(pt2_18.y+splitY)/2 + 6*r} ${splitX} ${splitY}`, w: 3.5 * r },
+        { d: `M ${pt2_36.x} ${pt2_36.y} Q ${(pt2_36.x+pt3a_25.x)/2 + mw1} ${(pt2_36.y+pt3a_25.y)/2 + 5*r} ${pt3a_25.x} ${pt3a_25.y}`, w: 2.6 * r },
+        { d: `M ${pt2_56.x} ${pt2_56.y} Q ${(pt2_56.x+pt3a_50.x)/2 + mw4} ${(pt2_56.y+pt3a_50.y)/2 + 4*r} ${pt3a_50.x} ${pt3a_50.y}`, w: 2.3 * r },
+        { d: `M ${pt2_76.x} ${pt2_76.y} Q ${(pt2_76.x+pt3a_75.x)/2 + mw2} ${(pt2_76.y+pt3a_75.y)/2 + 3*r} ${pt3a_75.x} ${pt3a_75.y}`, w: 1.8 * r },
+
+        // Central eyelet bridges (Col 3a to Col 3b)
+        { d: `M ${pt3a_25.x} ${pt3a_25.y} Q ${(pt3a_25.x+pt3b_25.x)/2 + mw2} ${(pt3a_25.y+pt3b_25.y)/2 + 4*r} ${pt3b_25.x} ${pt3b_25.y}`, w: 2.4 * r },
+        { d: `M ${pt3a_50.x} ${pt3a_50.y} Q ${(pt3a_50.x+pt3b_50.x)/2 + mw1} ${(pt3a_50.y+pt3b_50.y)/2 + 3*r} ${pt3b_50.x} ${pt3b_50.y}`, w: 2.0 * r },
+        { d: `M ${pt3a_75.x} ${pt3a_75.y} Q ${(pt3a_75.x+pt3b_75.x)/2 + mw3} ${(pt3a_75.y+pt3b_75.y)/2 + 2*r} ${pt3b_75.x} ${pt3b_75.y}`, w: 1.7 * r },
+
+        // Center-right zone bridges (Col 3 to Col MR)
+        { d: `M ${splitX} ${splitY} Q ${(splitX+ptMR_22.x)/2 + mw2} ${(splitY+ptMR_22.y)/2 + 6*r} ${ptMR_22.x} ${ptMR_22.y}`, w: 3.2 * r },
+        { d: `M ${pt3b_25.x} ${pt3b_25.y} Q ${(pt3b_25.x+ptMR_45.x)/2 + mw3} ${(pt3b_25.y+ptMR_45.y)/2 + 5*r} ${ptMR_45.x} ${ptMR_45.y}`, w: 2.5 * r },
+        { d: `M ${pt3b_50.x} ${pt3b_50.y} Q ${(pt3b_50.x+ptMR_70.x)/2 + mw1} ${(pt3b_50.y+ptMR_70.y)/2 + 3*r} ${ptMR_70.x} ${ptMR_70.y}`, w: 2.0 * r },
+        { d: `M ${pt3b_75.x} ${pt3b_75.y} Q ${(pt3b_75.x+colMR_p3.x)/2} ${(pt3b_75.y+colMR_p3.y)/2 + 2*r} ${colMR_p3.x} ${colMR_p3.y}`, w: 1.6 * r },
+
+        // Right zone bridges (Col MR to Col 4)
+        { d: `M ${ptMR_22.x} ${ptMR_22.y} Q ${(ptMR_22.x+pt4_18.x)/2 + mw4} ${(ptMR_22.y+pt4_18.y)/2 + 6*r} ${pt4_18.x} ${pt4_18.y}`, w: 3.0 * r },
+        { d: `M ${ptMR_45.x} ${ptMR_45.y} Q ${(ptMR_45.x+pt4_38.x)/2 + mw2} ${(ptMR_45.y+pt4_38.y)/2 + 5*r} ${pt4_38.x} ${pt4_38.y}`, w: 2.4 * r },
+        { d: `M ${ptMR_70.x} ${ptMR_70.y} Q ${(ptMR_70.x+pt4_60.x)/2 + mw1} ${(ptMR_70.y+pt4_60.y)/2 + 4*r} ${pt4_60.x} ${pt4_60.y}`, w: 2.0 * r },
+        { d: `M ${colMR_p3.x} ${colMR_p3.y} Q ${(colMR_p3.x+pt4_82.x)/2} ${(colMR_p3.y+pt4_82.y)/2 + 2*r} ${pt4_82.x} ${pt4_82.y}`, w: 1.6 * r },
+
+        // Transverse micro-web filaments across wide openings
+        { d: `M ${pt2_36.x} ${pt2_36.y + 10*r} Q ${(pt2_36.x+ptMR_45.x)/2 + mw2} ${(pt2_36.y+ptMR_45.y)/2 + 8*r} ${ptMR_45.x - 4} ${ptMR_45.y}`, w: 1.2 * r },
+        { d: `M ${pt1_58.x} ${pt1_58.y + 6*r} Q ${(pt1_58.x+pt3a_50.x)/2 + mw3} ${(pt1_58.y+pt3a_50.y)/2 + 7*r} ${pt3a_50.x} ${pt3a_50.y}`, w: 1.2 * r }
+      ];
+
+      branches.forEach(b => {
+        const p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        p.setAttribute('d', b.d);
+        p.setAttribute('stroke', 'url(#venom-brand-grad)');
+        p.setAttribute('stroke-width', b.w);
+        p.setAttribute('stroke-linecap', 'round');
+        p.setAttribute('fill', 'none');
+        denseGroup.appendChild(p);
+      });
+
+      // 1px micro pointer connectivity
+      const pointerGroup = document.getElementById('pointerMicroFilaments');
+      pointerGroup.innerHTML = '';
+      const microConnectors = [
+        `M ${col1_p3.x} ${col1_p3.y} Q ${curX - 2.5 * r} ${curY - 6 * r} ${curX - 1.2 * r} ${curY}`,
+        `M ${col2_p3.x} ${col2_p3.y} Q ${curX - 1.2 * r} ${curY - 5 * r} ${curX - 0.4 * r} ${curY + 0.4 * r}`,
+        `M ${col3a_p3.x} ${col3a_p3.y} L ${curX} ${curY}`,
+        `M ${col3b_p3.x} ${col3b_p3.y} Q ${curX + 1.2 * r} ${curY - 5 * r} ${curX + 0.6 * r} ${curY}`,
+        `M ${colMR_p3.x} ${colMR_p3.y} Q ${curX + 1.8 * r} ${curY - 5.5 * r} ${curX + 1.1 * r} ${curY + 0.2 * r}`,
+        `M ${col4_p3.x} ${col4_p3.y} Q ${curX + 2.5 * r} ${curY - 6 * r} ${curX + 1.5 * r} ${curY + 0.4 * r}`,
+        // 2 delicate 1px micro-whiskers wrapping the fingertip contact point
+        `M ${col1_p3.x - 0.8 * r} ${col1_p3.y + 4 * r} Q ${curX - 3 * r} ${curY - 2 * r} ${curX} ${curY + 1.2 * r}`,
+        `M ${col4_p3.x + 0.8 * r} ${col4_p3.y + 4 * r} Q ${curX + 3 * r} ${curY - 2 * r} ${curX + 0.8 * r} ${curY + 1.2 * r}`
+      ];
+
+      microConnectors.forEach(cd => {
+        const p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        p.setAttribute('d', cd);
+        p.setAttribute('stroke', 'url(#venom-brand-grad)');
+        p.setAttribute('stroke-width', '1.0'); // Exactly 1px micro connectivity!
+        p.setAttribute('stroke-linecap', 'round');
+        p.setAttribute('fill', 'none');
+        pointerGroup.appendChild(p);
+      });
+
+      const microBead = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      microBead.setAttribute('cx', curX);
+      microBead.setAttribute('cy', curY);
+      microBead.setAttribute('r', `${1.2 * r}`);
+      microBead.setAttribute('fill', '#4472C4');
+      pointerGroup.appendChild(microBead);
+
+      // Blurred white specular highlights
+      const hlGroup = document.getElementById('blurredHighlights');
+      hlGroup.innerHTML = '';
+      const hl1D = `M ${col1_p0.x - 1.5} ${col1_p0.y} C ${col1_p1.x - 1.5} ${col1_p1.y}, ${col1_p2.x - 1.2} ${col1_p2.y}, ${col1_p3.x - 0.8} ${col1_p3.y}`;
+      const hl3D = `M ${col3_p0.x - 1.2} ${col3_p0.y} L ${splitX - 1.0} ${splitY}`;
+      const hl4D = `M ${col4_p0.x - 1.2} ${col4_p0.y} C ${col4_p1.x - 1.0} ${col4_p1.y}, ${col4_p2.x - 0.8} ${col4_p2.y}, ${col4_p3.x - 0.8} ${col4_p3.y}`;
+      const hl3aD = `M ${splitX - 1.0} ${splitY} C ${col3a_p1.x - 0.8} ${col3a_p1.y}, ${col3a_p2.x - 0.6} ${col3a_p2.y}, ${col3a_p3.x} ${col3a_p3.y}`;
+      const hlMRD = `M ${colMR_p0.x + 1.0} ${colMR_p0.y} C ${colMR_p1.x + 0.8} ${colMR_p1.y}, ${colMR_p2.x + 0.6} ${colMR_p2.y}, ${colMR_p3.x} ${colMR_p3.y}`;
+
+      const highlights = [
+        { d: hl1D, w: 2.2 * r, op: '0.80' },
+        { d: hl3D, w: 2.8 * r, op: '0.75' },
+        { d: hl4D, w: 2.0 * r, op: '0.75' },
+        { d: hl3aD, w: 1.8 * r, op: '0.65' },
+        { d: hlMRD, w: 1.6 * r, op: '0.60' }
+      ];
+
+      highlights.forEach(h => {
+        const p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        p.setAttribute('d', h.d);
+        p.setAttribute('stroke', 'rgba(255, 255, 255, 0.95)');
+        p.setAttribute('stroke-width', h.w);
+        p.setAttribute('stroke-opacity', h.op);
+        p.setAttribute('stroke-linecap', 'round');
+        p.setAttribute('fill', 'none');
+        hlGroup.appendChild(p);
+      });
+    }
+
+    update();
+  </script>
+</body>
+</html>

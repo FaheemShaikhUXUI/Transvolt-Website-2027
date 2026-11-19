@@ -1,0 +1,48 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<script src='https://cdn.tailwindcss.com'></script>
+</head>
+<body class='bg-slate-900 p-8'>
+  <div class='max-w-md space-y-4'>
+    <!-- Hexagon Tile Active -->
+    <div class='relative transition-all duration-300 cursor-pointer p-[1.5px] bg-[#76B84A] drop-shadow-[0_4px_14px_rgba(84,130,53,0.4)]'
+         style='clip-path: polygon(20px 0%, calc(100% - 20px) 0%, 100% 50%, calc(100% - 20px) 100%, 20px 100%, 0% 50%);'>
+      <div class='w-full h-full pl-7 pr-6 py-4 flex items-center justify-between bg-[#548235] text-white'
+           style='clip-path: polygon(20px 0%, calc(100% - 20px) 0%, 100% 50%, calc(100% - 20px) 100%, 20px 100%, 0% 50%);'>
+        <div class='flex items-center gap-3.5'>
+          <div class='w-10 h-10 flex items-center justify-center bg-white/20'
+               style='clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);'>
+            ★
+          </div>
+          <div>
+            <span class='text-[10px] font-mono font-bold text-white/80'>01 • REAL-WORLD MISSION</span>
+            <h3 class='text-base font-bold text-white'>Tangible Climate Impact</h3>
+          </div>
+        </div>
+        <span>&gt;</span>
+      </div>
+    </div>
+
+    <!-- Hexagon Tile Inactive -->
+    <div class='relative transition-all duration-300 cursor-pointer p-[1.5px] bg-white/10 hover:bg-[#548235]/60'
+         style='clip-path: polygon(20px 0%, calc(100% - 20px) 0%, 100% 50%, calc(100% - 20px) 100%, 20px 100%, 0% 50%);'>
+      <div class='w-full h-full pl-7 pr-6 py-4 flex items-center justify-between bg-[#0B0F17] text-gray-300'
+           style='clip-path: polygon(20px 0%, calc(100% - 20px) 0%, 100% 50%, calc(100% - 20px) 100%, 20px 100%, 0% 50%);'>
+        <div class='flex items-center gap-3.5'>
+          <div class='w-10 h-10 flex items-center justify-center bg-white/[0.06] text-[#76B84A]'
+               style='clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);'>
+            ⚡
+          </div>
+          <div>
+            <span class='text-[10px] font-mono font-bold text-gray-400'>02 • AUTONOMY & SPEED</span>
+            <h3 class='text-base font-bold text-white'>Extreme Ownership & Agility</h3>
+          </div>
+        </div>
+        <span>&gt;</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

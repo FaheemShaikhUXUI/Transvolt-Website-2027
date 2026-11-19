@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+  (function() {
+    function setScale() {
+      if (window.innerWidth >= 1024) {
+        var s = Math.min(window.innerWidth / 1920, window.innerHeight / 960);
+        document.documentElement.style.zoom = s;
+      } else {
+        document.documentElement.style.zoom = '1';
+      }
+    }
+    setScale();
+    window.addEventListener('resize', setScale);
+  })();
+</script>
+<style>
+  body { margin:0; padding:0; background:#fff; overflow:hidden; }
+  .box {
+    width: 1920px;
+    height: 960px;
+    border: 4px solid red;
+    box-sizing: border-box;
+    position: relative;
+  }
+</style>
+</head>
+<body>
+  <div class="box">
+    <h1>Testing DocumentElement Zoom</h1>
+    <div style="position:absolute; bottom:20px; right:20px;">Bottom Right Element</div>
+  </div>
+</body>
+</html>

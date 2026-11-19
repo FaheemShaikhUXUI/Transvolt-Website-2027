@@ -1,0 +1,678 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==========================================================================
+   Universal Minimalist Floating "In-Air" Scrollbar (Site-wide)
+   - 5px Width Thumb, Gray Color with 30% Opacity
+   - 7px Distance from Right Screen Edge
+   - Zero full frame, zero track background, zero buttons/arrows
+   ========================================================================== */
+html,
+body,
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(156, 163, 175, 0.30) transparent;
+}
+
+/* Chrome, Edge, Safari, Opera (Using direct pseudo-element selectors for Chromium compliance) */
+::-webkit-scrollbar,
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+div::-webkit-scrollbar,
+main::-webkit-scrollbar,
+section::-webkit-scrollbar {
+  width: 12px !important; /* 5px thumb body + 7px right air gap */
+  height: 12px !important;
+}
+
+::-webkit-scrollbar-track,
+html::-webkit-scrollbar-track,
+body::-webkit-scrollbar-track,
+div::-webkit-scrollbar-track,
+main::-webkit-scrollbar-track,
+section::-webkit-scrollbar-track {
+  background: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+::-webkit-scrollbar-thumb,
+html::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb,
+div::-webkit-scrollbar-thumb,
+main::-webkit-scrollbar-thumb,
+section::-webkit-scrollbar-thumb {
+  background-color: rgba(156, 163, 175, 0.30) !important; /* Gray with 30% opacity */
+  border-radius: 9999px !important;
+  background-clip: padding-box !important;
+  border-right: 7px solid transparent !important; /* Exactly 7px gap from the right side */
+  border-left: 0px solid transparent !important;
+  border-top: 4px solid transparent !important;
+  border-bottom: 4px solid transparent !important;
+  box-shadow: none !important;
+}
+
+::-webkit-scrollbar-thumb:hover,
+html::-webkit-scrollbar-thumb:hover,
+body::-webkit-scrollbar-thumb:hover,
+div::-webkit-scrollbar-thumb:hover,
+main::-webkit-scrollbar-thumb:hover,
+section::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(156, 163, 175, 0.60) !important;
+}
+
+::-webkit-scrollbar-button,
+html::-webkit-scrollbar-button,
+body::-webkit-scrollbar-button,
+div::-webkit-scrollbar-button {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  background: transparent !important;
+}
+
+::-webkit-scrollbar-corner,
+html::-webkit-scrollbar-corner,
+body::-webkit-scrollbar-corner,
+div::-webkit-scrollbar-corner {
+  display: none !important;
+  background: transparent !important;
+}
+
+:root {
+  --color-green: #548235;
+  --color-blue: #4472c4;
+  --color-dark-green: #456e2d;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* Match exact outer container padding of Section 2 and Navbar across all screen widths */
+@media (min-width: 1024px) {
+  .section-container-left {
+    padding-left: max(48px, calc((100vw - 1780px) / 2 + 48px)) !important;
+  }
+}
+
+/* Page Break Snap Container */
+.snap-container {
+  scroll-snap-type: y mandatory;
+  overflow-y: scroll;
+  height: 100vh;
+  scroll-behavior: smooth;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.snap-container::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+/* Custom Frameless Horizontal Scrollbar (Zero Frame, Floating Capsule Thumb) */
+.clean-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(156, 163, 175, 0.45) transparent;
+}
+
+.clean-scrollbar::-webkit-scrollbar {
+  height: 6px;
+}
+
+.clean-scrollbar::-webkit-scrollbar-button {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+.clean-scrollbar::-webkit-scrollbar-track {
+  background: transparent !important;
+  border: none !important;
+}
+
+.clean-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(156, 163, 175, 0.45) !important;
+  border-radius: 9999px !important;
+  border: none !important;
+  transition: background 0.2s ease;
+}
+
+.clean-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #548235 !important;
+}
+
+.dark .clean-scrollbar {
+  scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
+}
+
+.dark .clean-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.25) !important;
+}
+
+.dark .clean-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #72B347 !important;
+}
+
+/* Hide Scrollbar Utility */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.snap-section {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  height: 100vh;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ==========================================================================
+   Transvolt Circular Soft-Gradient Theme Transition (from Portal V4)
+   ========================================================================== */
+@property --mask-radius {
+  syntax: '<length>';
+  inherits: true;
+  initial-value: 0px;
+}
+
+::view-transition,
+::view-transition-group(root),
+::view-transition-image-pair(root),
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+  pointer-events: none !important;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 99999;
+  -webkit-mask-image: radial-gradient(
+    circle at var(--theme-x, 50%) var(--theme-y, 50%),
+    #000 0%,
+    #000 calc(var(--mask-radius, 0px) - 520px),
+    rgba(0, 0, 0, 0.94) calc(var(--mask-radius, 0px) - 420px),
+    rgba(0, 0, 0, 0.80) calc(var(--mask-radius, 0px) - 320px),
+    rgba(0, 0, 0, 0.60) calc(var(--mask-radius, 0px) - 220px),
+    rgba(0, 0, 0, 0.38) calc(var(--mask-radius, 0px) - 140px),
+    rgba(0, 0, 0, 0.18) calc(var(--mask-radius, 0px) - 70px),
+    rgba(0, 0, 0, 0.04) calc(var(--mask-radius, 0px) - 20px),
+    transparent var(--mask-radius, 0px)
+  );
+  mask-image: radial-gradient(
+    circle at var(--theme-x, 50%) var(--theme-y, 50%),
+    #000 0%,
+    #000 calc(var(--mask-radius, 0px) - 520px),
+    rgba(0, 0, 0, 0.94) calc(var(--mask-radius, 0px) - 420px),
+    rgba(0, 0, 0, 0.80) calc(var(--mask-radius, 0px) - 320px),
+    rgba(0, 0, 0, 0.60) calc(var(--mask-radius, 0px) - 220px),
+    rgba(0, 0, 0, 0.38) calc(var(--mask-radius, 0px) - 140px),
+    rgba(0, 0, 0, 0.18) calc(var(--mask-radius, 0px) - 70px),
+    rgba(0, 0, 0, 0.04) calc(var(--mask-radius, 0px) - 20px),
+    transparent var(--mask-radius, 0px)
+  );
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+@keyframes themeCircularWaveExpand {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0.95;
+  }
+  35% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0;
+  }
+}
+
+.theme-circular-wave-anim {
+  animation: themeCircularWaveExpand 2860ms cubic-bezier(0.12, 1, 0.28, 1) forwards;
+  will-change: transform, opacity;
+}
+
+/* Glassmorphism utility */
+.glass-card-light {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(229, 231, 235, 0.9);
+}
+
+.glass-card-dark {
+  background: rgba(13, 17, 23, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* Smooth left-to-right vehicle drive animation */
+@keyframes driveAcross {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100vw);
+  }
+}
+
+.animate-drive-smooth {
+  animation: driveAcross 24s linear infinite;
+  will-change: transform;
+}
+
+/* Running Beam Border Animation */
+@keyframes borderBeamRotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes homeNewsMarquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-border-beam {
+  animation: borderBeamRotate 4s linear infinite;
+  will-change: transform;
+}
+
+.animate-border-beam-slow {
+  animation: borderBeamRotate 7s linear infinite;
+  will-change: transform;
+}
+
+/* Dynamic Running Gradient of Pure Branding Blue & Green ONLY (Left to Right Movement) */
+@keyframes dynamicGreenFlow {
+  0% {
+    background-position: 200% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-dynamic-green-gradient {
+  background: linear-gradient(
+    90deg,
+    #4472C4 0%,
+    #548235 25%,
+    #4472C4 50%,
+    #548235 75%,
+    #4472C4 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: dynamicGreenFlow 6s linear infinite;
+  will-change: background-position;
+}
+
+/* Left & Right Shuffling Button Gradient */
+@keyframes buttonGradientShuffle {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-gradient-shuffle {
+  background: linear-gradient(
+    90deg,
+    #4472C4 0%,
+    #548235 50%,
+    #4472C4 100%
+  );
+  background-size: 200% 100%;
+  animation: buttonGradientShuffle 3.5s ease-in-out infinite;
+  will-change: background-position;
+}
+
+/* Atmospheric Thunder & Sky-Blue Ambient Glow Keyframes - 10% Peak Opacity */
+@keyframes thunderStrike {
+  0%, 65%, 100% {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  67% {
+    opacity: calc(var(--thunder-peak-opacity, 0.10) * 0.85);
+    transform: scale(1);
+  }
+  69% {
+    opacity: calc(var(--thunder-peak-opacity, 0.10) * 0.18);
+  }
+  71% {
+    opacity: var(--thunder-peak-opacity, 0.10);
+    transform: scale(1.02);
+  }
+  74% {
+    opacity: calc(var(--thunder-peak-opacity, 0.10) * 0.25);
+  }
+  76% {
+    opacity: calc(var(--thunder-peak-opacity, 0.10) * 0.90);
+  }
+  79% {
+    opacity: calc(var(--thunder-peak-opacity, 0.10) * 0.20);
+  }
+  81% {
+    opacity: calc(var(--thunder-peak-opacity, 0.10) * 0.75);
+  }
+  85% {
+    opacity: 0;
+  }
+}
+
+/* Atmospheric Thunder & Sky-Blue Ambient Glow Keyframes - Controlled by CSS Variables */
+@keyframes thunderFlashGlow {
+  0%, 64%, 100% {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  67% {
+    opacity: calc(var(--thunder-glow-peak-opacity, 0.05) * 0.75);
+    transform: scale(1.15);
+  }
+  69% {
+    opacity: calc(var(--thunder-glow-peak-opacity, 0.05) * 0.25);
+  }
+  71% {
+    opacity: var(--thunder-glow-peak-opacity, 0.05);
+    transform: scale(1.4);
+  }
+  74% {
+    opacity: calc(var(--thunder-glow-peak-opacity, 0.05) * 0.35);
+  }
+  76% {
+    opacity: calc(var(--thunder-glow-peak-opacity, 0.05) * 0.80);
+    transform: scale(1.25);
+  }
+  81% {
+    opacity: calc(var(--thunder-glow-peak-opacity, 0.05) * 0.45);
+  }
+  86% {
+    opacity: 0;
+  }
+}
+
+.animate-thunder-strike {
+  animation: thunderStrike 3.8s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+  will-change: opacity, transform;
+}
+
+.animate-thunder-flash {
+  animation: thunderFlashGlow 3.8s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+  will-change: opacity, transform;
+}
+
+/* Gentle Subtle Horizontal Float (Confined to Local Pocket - "Little Bit in this area only") */
+@keyframes gentleFloatLR {
+  0% {
+    transform: translateX(-5%);
+  }
+  100% {
+    transform: translateX(5%);
+  }
+}
+
+.animate-gentle-sway {
+  animation: gentleFloatLR 3.6s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+/* Tree Canopy Green Reveal Synchronized with Electric Vehicles Passing */
+@keyframes treeBloomSync {
+  0% {
+    opacity: 1;
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  20% {
+    opacity: 0;
+  }
+  48% {
+    opacity: 0;
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  62% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.animate-tree-bloom {
+  animation: treeBloomSync 24s linear infinite;
+  will-change: opacity;
+}
+
+/* Base Storm Background & Thunder Fade Synchronized with Electric Vehicles Passing */
+@keyframes bgStormFadeSync {
+  0% {
+    opacity: 0;
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  20% {
+    opacity: 1;
+  }
+  48% {
+    opacity: 1;
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  62% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.animate-bg-fade {
+  animation: bgStormFadeSync 24s linear infinite;
+  will-change: opacity;
+}
+
+/* Running Green Beam Line on Closed Sidebar Stroke (Active in both Light & Dark themes) */
+@keyframes sidebarBeamRun {
+  0% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: -1000;
+  }
+}
+
+.animate-sidebar-beam {
+  stroke-dasharray: 140 860;
+  animation: sidebarBeamRun 3.8s linear infinite;
+  will-change: stroke-dashoffset;
+}
+
+.animate-sidebar-beam-glow {
+  stroke-dasharray: 180 820;
+  animation: sidebarBeamRun 3.8s linear infinite;
+  will-change: stroke-dashoffset;
+}
+
+/* Letter-by-Letter Staggered Reveal Animation for Selected State Name (Right-to-Left Stagger) */
+@keyframes letterReveal {
+  0% {
+    opacity: 0;
+    transform: translateX(14px);
+    filter: blur(1.5px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+    filter: blur(0px);
+  }
+}
+
+.animate-letter-reveal {
+  animation: letterReveal 240ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity, filter;
+}
+
+/* Smooth Solution Category Switching Crossfade */
+@keyframes solutionCrossfade {
+  0% {
+    opacity: 0;
+    transform: translateY(4px);
+    filter: blur(1px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0px);
+  }
+}
+
+.animate-solution-fade {
+  animation: solutionCrossfade 300ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: opacity, transform, filter;
+}
+
+@keyframes solutionImageFade {
+  0% {
+    opacity: 0.5;
+    transform: scale(1.025);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-solution-image {
+  animation: solutionImageFade 350ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: opacity, transform;
+}
+
+/* ==========================================================================
+   Expo Glass Effect (Liquid Glassmorphism with Refraction & Specular Glare)
+   - Inspired by Apple VisionOS / iOS Liquid Glass and Expo Glass View
+   - Real-time backdrop blur, double-specular edge glow, and frosted depth
+   ========================================================================== */
+.expo-glass-tile {
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(24px) saturate(190%);
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
+  border-radius: 20px;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.expo-glass-dark {
+  background: linear-gradient(135deg, rgba(84, 130, 53, 0.18) 0%, rgba(255, 255, 255, 0.05) 45%, rgba(68, 114, 196, 0.09) 100%), rgba(10, 16, 26, 0.68);
+  border: 1px solid rgba(84, 130, 53, 0.5);
+  box-shadow: 
+    inset 0 1px 1.5px 0 rgba(255, 255, 255, 0.45),
+    inset 0 -1px 1.5px 0 rgba(0, 0, 0, 0.4),
+    0 16px 40px -10px rgba(0, 0, 0, 0.65),
+    0 0 24px -2px rgba(84, 130, 53, 0.22);
+}
+
+.expo-glass-dark:hover {
+  background: linear-gradient(135deg, rgba(84, 130, 53, 0.24) 0%, rgba(255, 255, 255, 0.08) 45%, rgba(68, 114, 196, 0.12) 100%), rgba(14, 22, 35, 0.72);
+  border-color: rgba(118, 184, 74, 0.85);
+  box-shadow: 
+    inset 0 1px 2.5px 0 rgba(255, 255, 255, 0.75),
+    inset 0 -1px 2px 0 rgba(0, 0, 0, 0.5),
+    0 22px 50px -10px rgba(0, 0, 0, 0.75),
+    0 0 35px 2px rgba(84, 130, 53, 0.38);
+  transform: translateY(-3px) scale(1.008);
+}
+
+.expo-glass-light {
+  background: linear-gradient(135deg, rgba(84, 130, 53, 0.14) 0%, rgba(255, 255, 255, 0.75) 50%, rgba(235, 243, 230, 0.55) 100%);
+  border: 1px solid rgba(84, 130, 53, 0.45);
+  box-shadow: 
+    inset 0 1px 2px 0 rgba(255, 255, 255, 0.95),
+    inset 0 -1px 1px 0 rgba(0, 0, 0, 0.06),
+    0 14px 36px -8px rgba(84, 130, 53, 0.18);
+}
+
+.expo-glass-light:hover {
+  background: linear-gradient(135deg, rgba(84, 130, 53, 0.2) 0%, rgba(255, 255, 255, 0.85) 50%, rgba(235, 243, 230, 0.65) 100%);
+  border-color: rgba(84, 130, 53, 0.75);
+  box-shadow: 
+    inset 0 1px 2.5px 0 rgba(255, 255, 255, 1),
+    0 20px 45px -8px rgba(84, 130, 53, 0.26);
+  transform: translateY(-3px) scale(1.008);
+}
+
+/* Specular Top Glare Line */
+.expo-glass-glare {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.85) 30%, rgba(118, 184, 74, 0.95) 50%, rgba(255, 255, 255, 0.85) 70%, transparent 100%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Glass Inner Sheen Diagonal Refraction */
+.expo-glass-sheen {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.03) 35%, transparent 60%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Glass Button Pill */
+.expo-glass-button {
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.4), 0 4px 14px 0 rgba(0, 0, 0, 0.2);
+  transition: all 0.25s ease;
+}
+
+.expo-glass-button:hover {
+  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow: inset 0 1px 1.5px 0 rgba(255, 255, 255, 0.7), 0 6px 20px 0 rgba(84, 130, 53, 0.35);
+  transform: translateY(-1px);
+}
+
+
+
+
+
+

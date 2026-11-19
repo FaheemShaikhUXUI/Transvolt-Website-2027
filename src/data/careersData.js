@@ -1,0 +1,228 @@
+export const CAREERS_METADATA = {
+  headline: 'Shape the Future of Electric Transit',
+  subtitle:
+    'Join our mission-driven team of engineers, operations specialists, and mobility leaders accelerating India’s shift to zero-emission public and commercial fleets.',
+  contactEmail: 'careers@transvolt.in',
+  headOfficeLocation: 'Trade Link, Kamala Mills, Lower Parel, Mumbai',
+};
+
+export const CAREER_DEPARTMENTS = [
+  'All',
+  'Engineering & Tech',
+  'Depot & Fleet Ops',
+  'Charging Infrastructure',
+  'Strategy & Concessions',
+  'Safety & Compliance',
+];
+
+export const CAREER_LOCATIONS = [
+  'All Locations',
+  'Mumbai Head Office',
+  'Delhi NCR Regional HQ',
+  'Mira Bhayandar Depot (Thane)',
+  'Ulhasnagar Depot',
+  'Hybrid / Field',
+];
+
+export const OPEN_POSITIONS = [
+  {
+    id: 'tv-eng-01',
+    title: 'Lead EV Telemetry & IoT Systems Engineer',
+    department: 'Engineering & Tech',
+    location: 'Mumbai Head Office',
+    workplace: 'Hybrid',
+    type: 'Full-Time',
+    experience: '5-8 Years',
+    summary:
+      'Lead our connected fleet telemetry platform, streaming real-time battery diagnostics, state-of-charge (SoC) forecasting, and CAN-bus telemetry across commercial EV fleets.',
+    responsibilities: [
+      'Architect and scale cloud telemetry ingest pipelines processing sub-second telemetry from hundreds of active electric buses.',
+      'Interface with OEM powertrain controllers, BMS (Battery Management Systems), and vehicle CAN-bus (J1939 protocols).',
+      'Deploy automated anomaly detection for thermal runaway prevention, cell-voltage imbalances, and predictive brake wear.',
+      'Collaborate with depot teams to integrate telemetry with automated overnight charging dispatch schedulers.',
+    ],
+    requirements: [
+      'Bachelor’s or Master’s in Computer Science, Electrical Engineering, or equivalent experience.',
+      'Deep experience with vehicle telematics, CAN/OBD-II, MQTT/Kafka, and distributed real-time backends (Node.js/Go/Python).',
+      'Solid grasp of battery electrochemistry fundamentals and High-Voltage DC powertrain architectures.',
+      'Proven track record scaling production IoT infrastructures with 99.9% uptime SLA.',
+    ],
+    skills: ['CAN-bus (J1939)', 'IoT Architecture', 'Kafka / MQTT', 'BMS Telemetry', 'Cloud Scalability', 'Python / Go'],
+    urgent: true,
+  },
+  {
+    id: 'tv-ops-02',
+    title: 'Depot Operations Manager - Municipal EV Fleet',
+    department: 'Depot & Fleet Ops',
+    location: 'Mira Bhayandar Depot (Thane)',
+    workplace: 'On-site',
+    type: 'Full-Time',
+    experience: '6-10 Years',
+    summary:
+      'Direct depot ground operations for our 57+ electric bus concession with MBMC, overseeing vehicle turnaround, driver scheduling, and high-uptime daily service dispatch.',
+    responsibilities: [
+      'Manage end-to-end 24/7 depot floor operations ensuring 98%+ fleet service availability for public transit commuters.',
+      'Direct maintenance shifts, pre-trip vehicle safety checklists, tire telemetry inspections, and depot sanitation teams.',
+      'Liaise with municipal transport officers (MBMC) for timetable synchronization, trip compliance, and passenger feedback.',
+      'Enforce rigorous electrical safety protocols across high-voltage charging bays and yard traffic zones.',
+    ],
+    requirements: [
+      'Degree or Diploma in Automobile, Mechanical Engineering, or Logistics/Supply Chain.',
+      'Demonstrated experience managing transit depots, public bus systems, or large commercial vehicle fleets.',
+      'Strong leadership skills with ability to mobilize multi-shift technical crews, drivers, and yard marshals.',
+      'Working knowledge of statutory road transport regulations and electrical safety standards.',
+    ],
+    skills: ['Transit Operations', 'Fleet Availability', 'Yard Management', 'Shift Planning', 'SLA Compliance', 'HV Safety'],
+    urgent: true,
+  },
+  {
+    id: 'tv-chg-03',
+    title: 'High-Voltage Megawatt Charging Specialist',
+    department: 'Charging Infrastructure',
+    location: 'Ulhasnagar Depot',
+    workplace: 'On-site',
+    type: 'Full-Time',
+    experience: '3-6 Years',
+    summary:
+      'Oversee high-power DC fast-charging infrastructure (120kW–240kW CCS2), sub-station power transformers, and dynamic load-balancing systems powering municipal bus runs.',
+    responsibilities: [
+      'Ensure uninterrupted operation of depot high-voltage transformers, switchgear, and multi-gun DC fast chargers.',
+      'Perform preventive and corrective electrical maintenance, insulation testing, and thermal imaging diagnostics.',
+      'Implement smart charging algorithms to minimize peak-demand electricity tariffs and prevent grid strain.',
+      'Troubleshoot charging protocol handshakes (ISO 15118 / DIN 70121) between chargers and diverse OEM bus platforms.',
+    ],
+    requirements: [
+      'B.Tech / Diploma in Electrical & Electronics Engineering with valid High Voltage Supervisor certification.',
+      'Hands-on expertise with DC Fast Chargers (CCS-2 standard), power electronics, and substation switchgear.',
+      'Familiarity with OCPP 1.6J / 2.0 protocols and cloud-connected charger management systems (CMS).',
+      'Strong safety-first mindset with training in arc-flash protection and electrical lock-out / tag-out (LOTO).',
+    ],
+    skills: ['CCS2 Fast Charging', 'OCPP 1.6J/2.0', 'Substation Switchgear', 'Power Electronics', 'Load Balancing', 'HV Certified'],
+    urgent: false,
+  },
+  {
+    id: 'tv-gov-04',
+    title: 'Senior Public Concessions & Tender Strategist',
+    department: 'Strategy & Concessions',
+    location: 'Delhi NCR Regional HQ',
+    workplace: 'Hybrid',
+    type: 'Full-Time',
+    experience: '5-9 Years',
+    summary:
+      'Lead strategic bid formulation, financial concession modeling, and public-private partnership (PPP) contracts with state transport undertakings (STUs) and CESL initiatives.',
+    responsibilities: [
+      'Evaluate state and central electric mobility tenders (FAME / PM-eBus Sewa / GCC model tenders).',
+      'Lead techno-commercial bid preparation, lifecycle operating expenditure modeling, and tariff optimization.',
+      'Foster high-level relationships with municipal authorities, urban transit directorates, and regulatory bodies.',
+      'Collaborate with finance and legal teams to negotiate concession agreements and bankability clauses.',
+    ],
+    requirements: [
+      'MBA or Masters in Public Policy, Infrastructure Finance, or Engineering with infrastructure bidding experience.',
+      '4+ years direct experience in public procurement, PPP contracts, or commercial mobility tenders in India.',
+      'Excellent financial modeling (IRR, NPV, debt-service coverage) and persuasive written proposal skills.',
+      'Comfortable interfacing with senior civil servants and institutional financing partners.',
+    ],
+    skills: ['GCC Concessions', 'Tender Bidding', 'PPP Frameworks', 'Financial Modeling', 'Public Policy', 'STU Relations'],
+    urgent: false,
+  },
+  {
+    id: 'tv-eng-05',
+    title: 'Full-Stack Platform Engineer (Fleet Operating System)',
+    department: 'Engineering & Tech',
+    location: 'Mumbai Head Office',
+    workplace: 'Hybrid',
+    type: 'Full-Time',
+    experience: '3-6 Years',
+    summary:
+      'Build Transvolt’s next-generation Fleet Operating System web portal and mobile tools used by dispatchers, route planners, and municipal monitoring dashboards.',
+    responsibilities: [
+      'Develop reactive, ultra-fast web interfaces using React, TailwindCSS, TypeScript, and real-time WebSocket feeds.',
+      'Build resilient microservices powering route energy consumption analytics, battery health reports, and driver scoring.',
+      'Design geospatial map layers showing live bus positions, route deviations, and charging station availability.',
+      'Champion clean code standards, comprehensive unit testing, and automated CI/CD deployments.',
+    ],
+    requirements: [
+      'Proficiency in Modern React, TypeScript, Node.js, and relational/time-series databases (PostgreSQL/TimescaleDB).',
+      'Experience with geospatial libraries (MapLibre, Mapbox, or Leaflet) and live data visualization.',
+      'Passionate about crafting intuitive, frictionless UX/UI for fast-paced operational environments.',
+      'Understanding of microservice design, containerization (Docker), and cloud deployment patterns.',
+    ],
+    skills: ['React / TypeScript', 'Node.js', 'MapLibre / Leaflet', 'TimescaleDB / Postgres', 'WebSockets', 'TailwindCSS'],
+    urgent: false,
+  },
+  {
+    id: 'tv-sft-06',
+    title: 'Fleet Safety & Quality Compliance Specialist',
+    department: 'Safety & Compliance',
+    location: 'Mumbai Head Office',
+    workplace: 'On-site',
+    type: 'Full-Time',
+    experience: '4-7 Years',
+    summary:
+      'Establish and audit gold-standard safety practices across all Transvolt depots, vehicle fleets, high-voltage maintenance bays, and passenger transit routes.',
+    responsibilities: [
+      'Conduct regular EHS (Environment, Health & Safety) audits across operating depots and charging facilities.',
+      'Investigate road safety incidents, root-cause near-miss events, and implement institutional preventive measures.',
+      'Design driver eco-driving and defensive safety training curricula tailored specifically to electric powertrains.',
+      'Ensure strict adherence to Central Motor Vehicles Rules (CMVR), AIS-038/AIS-156 safety standards, and local factory acts.',
+    ],
+    requirements: [
+      'Degree or Diploma in Industrial Safety, Mechanical Engineering, or related discipline.',
+      'Previous experience in automotive safety, fleet logistics, or industrial chemical/electrical safety.',
+      'Certified in NEBOSH / IOSH or equivalent occupational health and safety credentials.',
+      'Empathetic communicator able to instill a zero-compromise safety culture across diverse operational teams.',
+    ],
+    skills: ['EHS Auditing', 'AIS-038/156 Standards', 'Root Cause Analysis', 'Driver Training', 'Incident Response', 'CMVR Compliance'],
+    urgent: false,
+  },
+  {
+    id: 'tv-eng-07',
+    title: 'OEM Integration & Battery Telematics Analyst',
+    department: 'Engineering & Tech',
+    location: 'Mumbai / Field',
+    workplace: 'Hybrid',
+    type: 'Full-Time',
+    experience: '2-5 Years',
+    summary:
+      'Bridge hardware and software by validating newly arrived OEM electric buses, tuning telemetry data loggers, and analyzing battery degradation metrics.',
+    responsibilities: [
+      'Perform on-site commissioning and protocol handshake validation for new OEM electric buses joining the fleet.',
+      'Analyze battery state-of-health (SoH) regression curves, internal resistance shifts, and thermal dissipation trends.',
+      'Collaborate with OEM engineering teams to resolve firmware bugs, controller resets, and sensor noise issues.',
+      'Generate monthly battery asset health reports for our investors and municipal transit authorities.',
+    ],
+    requirements: [
+      'B.Tech in Automobile, Mechatronics, or Electrical Engineering.',
+      'Familiarity with Lithium-ion cell chemistries (LFP, NMC), battery sizing, and C-rate thermal characteristics.',
+      'Experience using automotive diagnostics tools, oscilloscopes, and CAN loggers (Kvaser, Vector, or PCAN).',
+      'Strong data analysis skills using Python (Pandas/NumPy) or SQL.',
+    ],
+    skills: ['Battery Chemistry (LFP/NMC)', 'CAN Loggers', 'Automotive Commissioning', 'Python Data Analysis', 'SoH Diagnostics'],
+    urgent: false,
+  },
+  {
+    id: 'tv-ops-08',
+    title: 'Junior Depot Electrical & Mechanical Technician',
+    department: 'Depot & Fleet Ops',
+    location: 'Ulhasnagar Depot',
+    workplace: 'On-site',
+    type: 'Full-Time',
+    experience: '1-3 Years',
+    summary:
+      'Execute daily scheduled vehicle inspections, pneumatic brake checks, suspension lubrication, and basic charger cable maintenance under senior engineer guidance.',
+    responsibilities: [
+      'Perform daily pre-dispatch visual and mechanical checkups on electric buses and depot charging dispensers.',
+      'Assist senior technicians during pneumatic brake servicing, steering alignment, and 24V auxiliary battery replacements.',
+      'Keep comprehensive digital service logs and report inventory requirements for critical spare parts.',
+      'Maintain depot workshop cleanliness, tool calibration, and strict electrical safety zones.',
+    ],
+    requirements: [
+      'ITI or Diploma in Electrical, Mechanical, or Automobile Engineering.',
+      'Passionate about modern clean energy vehicles with keen eye for mechanical detail and discipline.',
+      'Willingness to work in rotating shifts supporting morning and night transit turnaround schedules.',
+      'Basic computer literacy to log work orders in depot maintenance software.',
+    ],
+    skills: ['Pneumatic Systems', 'Vehicle Inspection', 'Workshop Safety', 'Auxiliary Systems', 'Preventive Maintenance'],
+    urgent: false,
+  },
+];

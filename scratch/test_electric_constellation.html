@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Edge Electric Constellation Test</title>
+  <style>
+    body {
+      background: #f8fafc;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+  <div style="position:relative; width:460px; height:460px; display:flex; align-items:center; justify-content:center;">
+    <canvas id="canvas" width="460" height="460" style="position:absolute; left:0; top:0;"></canvas>
+    <div style="position:relative; z-index:20; background:#548235; color:white; font-size:12px; font-weight:600; padding:8px 20px; border-radius:9999px; pointer-events:none; box-shadow:0 4px 12px rgba(84,130,53,0.25);">
+      Contact Us
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const W = 460;
+    const H = 460;
+    const cx = W / 2;
+    const cy = H / 2;
+
+    const BASE_W = 88;
+    const BASE_H = 30;
+    const RADIUS = 15;
+    const straightW = BASE_W - 2 * RADIUS;
+
+    // Generate pill perimeter points
+    const points = [];
+    const nSide = 10;
+    const nCap = 14;
+
+    for (let i = 0; i < nSide; i++) {
+      const t = (i + 0.5) / nSide;
+      const x = -straightW / 2 + t * straightW;
+      const y = -BASE_H / 2;
+      points.push({ bx: x, by: y, nx: 0, ny: -1, x, y });
+    }
+    for (let i = 0; i < nCap; i++) {
+      const angle = -Math.PI / 2 + ((i + 0.5) / nCap) * Math.PI;
+      const x = straightW / 2 + Math.cos(angle) * RADIUS;
+      const y = Math.sin(angle) * RADIUS;
+      points.push({ bx: x, by: y, nx: Math.cos(angle), ny: Math.sin(angle), x, y });
+    }
+    for (let i = 0; i < nSide; i++) {
+      const t = (i + 0.5) / nSide;
+      const x = straightW / 2 - t * straightW;
+      const y = BASE_H / 2;
+      points.push({ bx: x, by: y, nx: 0, ny: 1, x, y });
+    }
+    for (let i = 0; i < nCap; i++) {
+      const angle = Math.PI / 2 + ((i + 0.5) / nCap) * Math.PI;
+      const x = -straightW / 2 + Math.cos(angle) * RADIUS;
+      const y = Math.sin(angle) * RADIUS;
+      points.push({ bx: x, by: y, nx: Math.cos(angle), ny: Math.sin(angle), x, y });
+    }
+
+    const NUM_DOTS = 30;
+    const dots = [];
+
+    for (let i = 0; i < NUM_DOTS; i++) {
+      const pIdx = Math.floor((i / NUM_DOTS) * points.length);
+      const edgeOffset = 1.2 + Math.random() * 4.8; // tightly 1.2px to 6px from edge
+      const pt = points[pIdx];
+      dots.push({
+        pIdx,
+        edgeOffset,
+        x: cx + pt.bx + pt.nx * edgeOffset,
+        y: cy + pt.by + pt.ny * edgeOffset,
+        vx: 0,
+        vy: 0,
+        r: 0.9 + Math.random() * 0.9,
+        color: ['#86efac', '#548235', '#4ade80', '#ffffff'][Math.floor(Math.random() * 4)],
+        speed: (0.003 + Math.random() * 0.004) * (i % 2 === 0 ? 1 : -1),
+        phase: Math.random() * Math.PI * 2
+      });
+    }
+
+    let mx = cx - 30;
+    let my = cy + 50;
+
+    function drawLightning(ctx, x1, y1, x2, y2, time, seed, alpha, isCursorArc = false) {
+      const dx = x2 - x1;
+      const dy = y2 - y1;
+      const dist = Math.hypot(dx, dy);
+      if (dist < 1) return;
+
+      const nx = -dy / dist;
+      const ny = dx / dist;
+
+      const segments = dist > 35 ? 4 : 3;
+      const jitterBase = isCursorArc ? 3.5 : 1.8;
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+
+      for (let s = 1; s < segments; s++) {
+        const t = s / segments;
+        const harmonic = Math.sin(time * 38 + seed * 7.3 + s * 3.1);
+        const noise = (Math.sin(time * 70 + seed * 13.7 + s * 5.3) * 0.5);
+        const offset = (harmonic + noise) * jitterBase * Math.sin(t * Math.PI);
+
+        const px = x1 + dx * t + nx * offset;
+        const py = y1 + dy * t + ny * offset;
+        ctx.lineTo(px, py);
+      }
+
+      ctx.lineTo(x2, y2);
+
+      ctx.strokeStyle = `rgba(134, 239, 172, ${alpha.toFixed(2)})`;
+      ctx.lineWidth = isCursorArc ? 1.05 : 0.8;
+      ctx.shadowColor = 'rgba(84, 130, 53, 0.7)';
+      ctx.shadowBlur = isCursorArc ? 6 : 3;
+      ctx.stroke();
+
+      if (alpha > 0.55) {
+        ctx.strokeStyle = `rgba(255, 255, 255, ${(alpha * 0.75).toFixed(2)})`;
+        ctx.lineWidth = 0.5;
+        ctx.shadowBlur = 0;
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+
+    function render() {
+      ctx.clearRect(0, 0, W, H);
+      const time = performance.now() * 0.001;
+
+      const mouseDist = Math.hypot(mx - cx, my - cy);
+      const isNear = mouseDist < 160;
+
+      dots.forEach((d) => {
+        const pt = points[d.pIdx];
+        const wobble = Math.sin(time * 2.5 + d.phase) * 1.5;
+        const totalOffset = d.edgeOffset + wobble;
+        const targetX = cx + pt.bx + pt.nx * totalOffset;
+        const targetY = cy + pt.by + pt.ny * totalOffset;
+
+        const dCursor = Math.hypot(mx - d.x, my - d.y);
+        let pullX = 0;
+        let pullY = 0;
+
+        if (isNear && dCursor < 125) {
+          const pullPower = Math.pow((125 - dCursor) / 125, 1.4) * 20;
+          const jitter = (Math.random() - 0.5) * 1.5;
+          pullX = ((mx - d.x) / (dCursor + 0.1)) * pullPower + jitter;
+          pullY = ((my - d.y) / (dCursor + 0.1)) * pullPower + jitter;
+        }
+
+        const ax = (targetX + pullX - d.x) * 0.16;
+        const ay = (targetY + pullY - d.y) * 0.16;
+
+        d.vx = (d.vx + ax) * 0.72;
+        d.vy = (d.vy + ay) * 0.72;
+        d.x += d.vx;
+        d.y += d.vy;
+      });
+
+      // 1. Draw edge constellation lightning lines
+      for (let i = 0; i < dots.length; i++) {
+        for (let j = i + 1; j < dots.length; j++) {
+          const d1 = dots[i];
+          const d2 = dots[j];
+          const dist = Math.hypot(d1.x - d2.x, d1.y - d2.y);
+          const maxDist = isNear ? 38 : 28;
+
+          if (dist < maxDist) {
+            const alpha = Math.pow((maxDist - dist) / maxDist, 1.2) * (isNear ? 0.85 : 0.50);
+            drawLightning(ctx, d1.x, d1.y, d2.x, d2.y, time, i * 7 + j, alpha, false);
+          }
+        }
+      }
+
+      // 2. Draw Electric Arcs to cursor
+      if (isNear) {
+        dots.forEach((d, idx) => {
+          const dCursor = Math.hypot(mx - d.x, my - d.y);
+          if (dCursor < 80) {
+            const alpha = Math.pow((80 - dCursor) / 80, 1.2) * 0.90;
+            drawLightning(ctx, d.x, d.y, mx, my, time, idx * 11, alpha, true);
+          }
+        });
+      }
+
+      // 3. Draw dots
+      dots.forEach((d) => {
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+        ctx.fillStyle = d.color;
+        ctx.shadowColor = d.color;
+        ctx.shadowBlur = isNear ? 5 : 2;
+        ctx.fill();
+        ctx.restore();
+      });
+
+      requestAnimationFrame(render);
+    }
+
+    render();
+  </script>
+</body>
+</html>

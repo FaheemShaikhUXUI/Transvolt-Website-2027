@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  body { margin: 0; overflow: hidden; background: #000; }
+  #scaler {
+    width: 1920px;
+    height: 1080px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform-origin: center center;
+    background: #fff;
+  }
+</style>
+</head>
+<body>
+  <div id="scaler">
+    <h1 style="padding:40px;">Test 1920x1080 Scaler</h1>
+  </div>
+  <script>
+    function update() {
+      const s = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+      document.getElementById('scaler').style.transform = 'translate(-50%, -50%) scale(' + s + ')';
+    }
+    window.addEventListener('resize', update);
+    update();
+  </script>
+</body>
+</html>
