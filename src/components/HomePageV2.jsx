@@ -17,6 +17,7 @@ import {
 import { ConstellationNetwork } from './ConstellationNetwork';
 import NewsBulletEffects from './NewsBulletEffects';
 import { newsArticles } from '../data/newsData';
+import { useTheme } from '../context/ThemeContext';
 
 // Transvolt Dual-Chevron Branding Arrow Component
 const BrandArrow = ({ className = 'h-3.5 w-auto', hoverWhite = false }) => (
@@ -138,6 +139,7 @@ const PROJECT_VIDEOS = [
 ];
 
 export const HomePageV2 = ({ currentPage = 0, onNavigate }) => {
+  const { isDark } = useTheme();
   const metrics = [
     { label: "Number of EV's", target: 4725, suffix: '+', icon: Bus },
     { label: 'Clean Kms Run', target: 4725, suffix: '+', icon: Leaf },
@@ -335,30 +337,48 @@ export const HomePageV2 = ({ currentPage = 0, onNavigate }) => {
   // Render 8 items (4 original + 4 cloned for seamless wrap)
   const extendedProjects = [...PROJECT_VIDEOS, ...PROJECT_VIDEOS];
 
+  const isDarkSection = currentPage === 0 || isDark;
+
   return (
     <div
-      data-bg="dark"
-      className="relative w-full h-screen overflow-hidden flex flex-col justify-between bg-black text-white select-none"
+      data-bg={isDarkSection ? "dark" : "light"}
+      className={`relative w-full h-screen overflow-hidden flex flex-col justify-between select-none transition-colors duration-500 ${
+        currentPage === 0
+          ? 'bg-black text-white'
+          : isDark
+          ? 'bg-[#0A0E17] text-white'
+          : 'bg-[#F8FAFC] text-gray-900'
+      }`}
     >
       {/* Unified Bullet Effects: 200ms spark from complete left edge, followed by 2.4s slow gray smoke */}
       <NewsBulletEffects isSparkActive={isSparkActive} isSmokeActive={isSmokeActive} targetRef={dotRef} />
 
-      {/* Background: 100% Black behind with Seamless Looping Aerial Fleet Video (2.5s-10.0s, 10% opacity left -> 45% opacity right) */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <video
-          src="/home_page2_bg_video.mp4"
-          autoPlay
-          loop
-          muted
-          playsInline
-          poster="/home_v2_bg.jpg"
-          className="w-full h-full object-cover select-none"
-          style={{
-            maskImage: 'linear-gradient(to right, rgba(0, 0, 0, 0.10) 0%, rgba(0, 0, 0, 0.45) 100%)',
-            WebkitMaskImage: 'linear-gradient(to right, rgba(0, 0, 0, 0.10) 0%, rgba(0, 0, 0, 0.45) 100%)',
-          }}
-        />
-      </div>
+      {/* Background: Seamless Looping Aerial Fleet Video ONLY on Section 1 / Slide 0 */}
+      {currentPage === 0 && (
+        <div className="absolute inset-0 pointer-events-none overflow-hidden transition-opacity duration-500">
+          <video
+            src="/home_page2_bg_video.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
+            poster="/home_v2_bg.jpg"
+            className="w-full h-full object-cover select-none"
+            style={{
+              maskImage: 'linear-gradient(to right, rgba(0, 0, 0, 0.10) 0%, rgba(0, 0, 0, 0.45) 100%)',
+              WebkitMaskImage: 'linear-gradient(to right, rgba(0, 0, 0, 0.10) 0%, rgba(0, 0, 0, 0.45) 100%)',
+            }}
+          />
+        </div>
+      )}
+
+      {/* Ambient background gradients for Section 2 (Who We Are) and Section 3 (Our News) */}
+      {currentPage > 0 && isDark && (
+        <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#0D1829]/70 via-[#0A0E17] to-black" />
+      )}
+      {currentPage > 0 && !isDark && (
+        <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-slate-50/80 via-white to-slate-100/60" />
+      )}
 
       {/* Main Container - Flex Between Top Content and Bottom Metrics Bar */}
       <div className="relative z-10 w-full h-full max-w-[1780px] mx-auto px-5 sm:px-[34px] lg:px-12 pr-16 sm:pr-24 lg:pr-28 pt-20 sm:pt-22 pb-4 sm:pb-5 flex flex-col justify-between">
@@ -699,14 +719,22 @@ export const HomePageV2 = ({ currentPage = 0, onNavigate }) => {
           >
             {/* Who We Are Title & Paragraphs */}
             <div className="flex flex-col space-y-2 mb-4">
-              <h2 className="text-2xl sm:text-[32px] lg:text-[40px] font-extrabold tracking-tight uppercase leading-none text-transparent bg-clip-text bg-gradient-to-r from-white via-emerald-300 to-white">
+              <h2 className={`text-2xl sm:text-[32px] lg:text-[40px] font-extrabold tracking-tight uppercase leading-none ${
+                isDark
+                  ? 'text-transparent bg-clip-text bg-gradient-to-r from-white via-emerald-300 to-white'
+                  : 'text-gray-900'
+              }`}>
                 WHO WE ARE
               </h2>
               <div className="space-y-2 max-w-4xl">
-                <p className="text-xs sm:text-[13.5px] lg:text-[14.5px] leading-relaxed text-gray-200 font-normal">
-                  <strong className="font-bold text-white">Transvolt</strong> is more than a business; it's a commitment to combating climate change and improving air quality through zero-emission mobility solutions. We're dedicated to building a green platform that offers <span className="font-bold text-white">ZEROEMISSION</span> services, in alignment with global efforts towards sustainable transportation.
+                <p className={`text-xs sm:text-[13.5px] lg:text-[14.5px] leading-relaxed font-normal ${
+                  isDark ? 'text-gray-200' : 'text-gray-700'
+                }`}>
+                  <strong className={`font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>Transvolt</strong> is more than a business; it's a commitment to combating climate change and improving air quality through zero-emission mobility solutions. We're dedicated to building a green platform that offers <span className={`font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>ZEROEMISSION</span> services, in alignment with global efforts towards sustainable transportation.
                 </p>
-                <p className="text-xs sm:text-[13.5px] lg:text-[14.5px] leading-relaxed text-gray-300 font-normal">
+                <p className={`text-xs sm:text-[13.5px] lg:text-[14.5px] leading-relaxed font-normal ${
+                  isDark ? 'text-gray-300' : 'text-gray-600'
+                }`}>
                   With a dedicated team and support from top infrastructure funds and financial institutions, we're leading the charge towards sustainable transportation in India and beyond!
                 </p>
               </div>
@@ -719,27 +747,49 @@ export const HomePageV2 = ({ currentPage = 0, onNavigate }) => {
                 return (
                   <div
                     key={idx}
-                    className="group relative rounded-2xl p-5 sm:p-6 flex flex-col justify-between border border-white/15 bg-[#0E131E]/80 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1.5 hover:border-[#72B347]/60 shadow-[0_4px_20px_rgba(0,0,0,0.5)] hover:shadow-[0_8px_30px_rgba(114,179,71,0.25)] min-h-[220px] sm:min-h-[240px]"
+                    className={`group relative rounded-2xl p-5 sm:p-6 flex flex-col justify-between border backdrop-blur-xl transition-all duration-300 hover:-translate-y-1.5 min-h-[220px] sm:min-h-[240px] ${
+                      isDark
+                        ? 'border-white/15 bg-[#0E131E]/80 shadow-[0_4px_20px_rgba(0,0,0,0.5)] hover:border-[#72B347]/60 hover:shadow-[0_8px_30px_rgba(114,179,71,0.25)]'
+                        : 'border-gray-200/90 bg-white/95 shadow-[0_4px_20px_rgba(0,0,0,0.06)] hover:border-[#548235]/60 hover:shadow-[0_10px_30px_rgba(84,130,53,0.18)]'
+                    }`}
                   >
                     <div className="absolute top-0 right-0 w-28 h-28 bg-[#548235]/15 rounded-full blur-2xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     <div>
                       <div className="flex items-center justify-between mb-3">
-                        <div className="w-11 h-11 rounded-xl flex items-center justify-center bg-[#548235]/20 text-[#72B347] border border-[#548235]/40 group-hover:bg-[#548235] group-hover:text-white group-hover:shadow-[0_0_14px_rgba(84,130,53,0.5)] transition-all duration-300">
+                        <div className={`w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-300 border ${
+                          isDark
+                            ? 'bg-[#548235]/20 text-[#72B347] border-[#548235]/40 group-hover:bg-[#548235] group-hover:text-white group-hover:shadow-[0_0_14px_rgba(84,130,53,0.5)]'
+                            : 'bg-emerald-50 text-[#548235] border-emerald-200 group-hover:bg-[#548235] group-hover:text-white group-hover:shadow-[0_0_14px_rgba(84,130,53,0.3)]'
+                        }`}>
                           <Icon className="w-5 h-5 stroke-[2.2]" />
                         </div>
-                        <span className="text-xs font-mono font-bold tracking-wider text-gray-400 uppercase">
+                        <span className={`text-xs font-mono font-bold tracking-wider uppercase ${
+                          isDark ? 'text-gray-400' : 'text-gray-500'
+                        }`}>
                           0{idx + 1}
                         </span>
                       </div>
-                      <h3 className="text-base sm:text-lg font-extrabold tracking-wide text-white uppercase mb-2 group-hover:text-[#72B347] transition-colors">
+                      <h3 className={`text-base sm:text-lg font-extrabold tracking-wide uppercase mb-2 transition-colors ${
+                        isDark
+                          ? 'text-white group-hover:text-[#72B347]'
+                          : 'text-gray-900 group-hover:text-[#548235]'
+                      }`}>
                         {item.title}
                       </h3>
-                      <p className="text-xs sm:text-[12.5px] leading-relaxed font-normal text-gray-300">
+                      <p className={`text-xs sm:text-[12.5px] leading-relaxed font-normal ${
+                        isDark ? 'text-gray-300' : 'text-gray-600'
+                      }`}>
                         {item.description}
                       </p>
                     </div>
-                    <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between">
-                      <span className="text-xs font-bold text-[#72B347] group-hover:text-[#86efac] transition-colors">
+                    <div className={`mt-4 pt-3 border-t flex items-center justify-between ${
+                      isDark ? 'border-white/10' : 'border-gray-100'
+                    }`}>
+                      <span className={`text-xs font-bold transition-colors ${
+                        isDark
+                          ? 'text-[#72B347] group-hover:text-[#86efac]'
+                          : 'text-[#548235] group-hover:text-[#44692a]'
+                      }`}>
                         Read More
                       </span>
                       <BrandArrow className="h-3 w-auto group-hover:translate-x-1 transition-transform" />
@@ -761,14 +811,24 @@ export const HomePageV2 = ({ currentPage = 0, onNavigate }) => {
             {/* Header & Sub-paragraph */}
             <div className="flex flex-col space-y-1.5 mb-3">
               <div className="flex items-center gap-3">
-                <h2 className="text-2xl sm:text-[30px] lg:text-[38px] font-extrabold tracking-tight uppercase leading-none pt-0.5 inline-block text-transparent bg-clip-text bg-gradient-to-r from-white via-emerald-300 to-white">
+                <h2 className={`text-2xl sm:text-[30px] lg:text-[38px] font-extrabold tracking-tight uppercase leading-none pt-0.5 inline-block ${
+                  isDark
+                    ? 'text-transparent bg-clip-text bg-gradient-to-r from-white via-emerald-300 to-white'
+                    : 'text-gray-900'
+                }`}>
                   Our News
                 </h2>
-                <span className="px-3 py-0.5 rounded-full text-[10.5px] font-bold uppercase tracking-wider bg-[#548235]/20 text-[#72B347] border border-[#548235]/40 backdrop-blur-md">
+                <span className={`px-3 py-0.5 rounded-full text-[10.5px] font-bold uppercase tracking-wider backdrop-blur-md ${
+                  isDark
+                    ? 'bg-[#548235]/20 text-[#72B347] border border-[#548235]/40'
+                    : 'bg-emerald-100/70 text-[#548235] border border-emerald-200'
+                }`}>
                   Latest Highlights
                 </span>
               </div>
-              <p className="text-xs sm:text-[13px] lg:text-[13.5px] leading-relaxed font-normal max-w-3xl text-gray-300">
+              <p className={`text-xs sm:text-[13px] lg:text-[13.5px] leading-relaxed font-normal max-w-3xl ${
+                isDark ? 'text-gray-300' : 'text-gray-600'
+              }`}>
                 Stay updated with Transvolt's landmark financing deals, EV fleet deployments, and strategic partnerships driving India's zero-emission heavy commercial mobility revolution.
               </p>
             </div>
@@ -779,26 +839,38 @@ export const HomePageV2 = ({ currentPage = 0, onNavigate }) => {
                 <div
                   key={idx}
                   onClick={() => onNavigate && onNavigate('news')}
-                  className="group relative flex flex-col justify-between cursor-pointer transition-all duration-300 hover:-translate-y-1 bg-[#0E131E]/70 border border-white/15 hover:border-[#72B347]/50 rounded-xl p-2.5 backdrop-blur-md"
+                  className={`group relative flex flex-col justify-between cursor-pointer transition-all duration-300 hover:-translate-y-1 rounded-xl p-2.5 backdrop-blur-md ${
+                    isDark
+                      ? 'bg-[#0E131E]/70 border border-white/15 hover:border-[#72B347]/50 shadow-[0_4px_16px_rgba(0,0,0,0.4)]'
+                      : 'bg-white border border-gray-200/90 hover:border-[#548235]/60 shadow-[0_4px_16px_rgba(0,0,0,0.06)] hover:shadow-[0_8px_24px_rgba(84,130,53,0.14)]'
+                  }`}
                 >
-                  <div className="relative w-full h-[120px] sm:h-[135px] rounded-lg border border-white/15 overflow-hidden bg-black/40">
+                  <div className={`relative w-full h-[120px] sm:h-[135px] rounded-lg border overflow-hidden ${
+                    isDark ? 'border-white/15 bg-black/40' : 'border-gray-200/80 bg-gray-100'
+                  }`}>
                     <img
                       src="/news-placeholder.jpg"
                       alt={item.title}
                       className="w-full h-full object-cover object-center group-hover:scale-108 transition-transform duration-500"
                     />
                     <div className="absolute top-2 right-2">
-                      <span className="px-2 py-0.5 text-[10px] font-mono font-bold tracking-wider backdrop-blur-md bg-black/75 text-white border border-white/20 rounded">
+                      <span className={`px-2 py-0.5 text-[10px] font-mono font-bold tracking-wider backdrop-blur-md rounded border ${
+                        isDark ? 'bg-black/75 text-white border-white/20' : 'bg-white/90 text-gray-800 border-gray-200 shadow-sm'
+                      }`}>
                         {item.num}
                       </span>
                     </div>
                   </div>
                   <div className="flex items-center justify-between pt-2.5 px-0.5">
                     <div className="flex flex-col pr-2 min-w-0">
-                      <h3 className="text-[11px] sm:text-[12px] font-black tracking-wider uppercase text-white group-hover:text-[#72B347] transition-colors truncate">
+                      <h3 className={`text-[11px] sm:text-[12px] font-black tracking-wider uppercase transition-colors truncate ${
+                        isDark ? 'text-white group-hover:text-[#72B347]' : 'text-gray-900 group-hover:text-[#548235]'
+                      }`}>
                         {item.shortTitle}
                       </h3>
-                      <span className="text-[10px] text-gray-400 font-medium mt-0.5 truncate">
+                      <span className={`text-[10px] font-medium mt-0.5 truncate ${
+                        isDark ? 'text-gray-400' : 'text-gray-500'
+                      }`}>
                         {item.category} / {item.year}
                       </span>
                     </div>
@@ -814,7 +886,11 @@ export const HomePageV2 = ({ currentPage = 0, onNavigate }) => {
             <div className="pt-3 flex justify-start">
               <button
                 onClick={() => onNavigate && onNavigate('news')}
-                className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full border border-white/20 bg-[#182335]/90 hover:bg-[#548235] hover:border-[#548235] text-white font-bold text-xs sm:text-[12.5px] tracking-wide group cursor-pointer transition-all duration-300 shadow-lg shadow-black/40"
+                className={`inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full border font-bold text-xs sm:text-[12.5px] tracking-wide group cursor-pointer transition-all duration-300 shadow-lg ${
+                  isDark
+                    ? 'border-white/20 bg-[#182335]/90 hover:bg-[#548235] hover:border-[#548235] text-white shadow-black/40'
+                    : 'border-gray-300 bg-white hover:bg-[#548235] hover:border-[#548235] text-gray-800 hover:text-white shadow-gray-200'
+                }`}
               >
                 <span>Read More News</span>
                 <BrandArrow
@@ -827,7 +903,7 @@ export const HomePageV2 = ({ currentPage = 0, onNavigate }) => {
 
         </div>
 
-        {/* BOTTOM SECTION: 5 Tiles with +8% Green Fill (11% Total) & Backdrop Blur */}
+        {/* BOTTOM SECTION: 5 Tiles with Green Fill & Dynamic Theme Styling */}
         <div className="w-full pt-2 mb-4 sm:mb-5">
           {/* 5 Equal Distributed Tiles Aligned till Theme Button */}
           <div className="grid grid-cols-5 gap-3 sm:gap-4 w-full items-center px-1 sm:px-2">
@@ -836,13 +912,30 @@ export const HomePageV2 = ({ currentPage = 0, onNavigate }) => {
               return (
                 <div
                   key={idx}
-                  className="flex flex-col items-center justify-center py-2.5 sm:py-3 px-2 sm:px-3 text-center rounded-xl sm:rounded-2xl bg-[#548235]/[0.11] backdrop-blur-md border border-[#548235]/55 shadow-[0_0_14px_rgba(84,130,53,0.35),inset_0_0_8px_rgba(84,130,53,0.15)] group cursor-default transition-all duration-200 hover:bg-[#548235]/[0.18] hover:border-[#548235]/90 hover:shadow-[0_0_22px_rgba(84,130,53,0.60),inset_0_0_12px_rgba(84,130,53,0.25)] hover:-translate-y-0.5"
+                  className={`flex flex-col items-center justify-center py-2.5 sm:py-3 px-2 sm:px-3 text-center rounded-xl sm:rounded-2xl backdrop-blur-md border group cursor-default transition-all duration-200 hover:-translate-y-0.5 ${
+                    isDarkSection
+                      ? 'bg-[#548235]/[0.11] border-[#548235]/55 shadow-[0_0_14px_rgba(84,130,53,0.35),inset_0_0_8px_rgba(84,130,53,0.15)] hover:bg-[#548235]/[0.18] hover:border-[#548235]/90 hover:shadow-[0_0_22px_rgba(84,130,53,0.60),inset_0_0_12px_rgba(84,130,53,0.25)]'
+                      : 'bg-white/90 border-[#548235]/35 shadow-[0_4px_16px_rgba(84,130,53,0.12),inset_0_0_6px_rgba(84,130,53,0.06)] hover:bg-emerald-50/70 hover:border-[#548235]/70 hover:shadow-[0_8px_24px_rgba(84,130,53,0.22)]'
+                  }`}
                 >
-                  <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-white mb-1.5 opacity-95 group-hover:scale-110 drop-shadow-md transition-transform" strokeWidth={2.2} />
-                  <span className="text-[11px] sm:text-[12.5px] font-semibold text-white/90 tracking-wide leading-tight mb-1 drop-shadow-sm">
+                  <Icon
+                    className={`w-5 h-5 sm:w-6 sm:h-6 mb-1.5 group-hover:scale-110 drop-shadow-md transition-transform ${
+                      isDarkSection ? 'text-white opacity-95' : 'text-[#548235]'
+                    }`}
+                    strokeWidth={2.2}
+                  />
+                  <span
+                    className={`text-[11px] sm:text-[12.5px] font-semibold tracking-wide leading-tight mb-1 drop-shadow-sm ${
+                      isDarkSection ? 'text-white/90' : 'text-gray-700'
+                    }`}
+                  >
                     {metric.label}
                   </span>
-                  <span className="text-2xl sm:text-[26px] lg:text-[31px] font-extrabold text-white tracking-tight tabular-nums drop-shadow-md leading-tight mt-0.5">
+                  <span
+                    className={`text-2xl sm:text-[26px] lg:text-[31px] font-extrabold tracking-tight tabular-nums drop-shadow-md leading-tight mt-0.5 ${
+                      isDarkSection ? 'text-white' : 'text-gray-900'
+                    }`}
+                  >
                     <CountUpNumber target={metric.target} suffix={metric.suffix} />
                   </span>
                 </div>

@@ -622,7 +622,7 @@ function AppContent() {
         <Navbar
           activePage={activePage}
           onNavigate={handleNavigation}
-          isDarkBg={isDark || activePage === 'home' || (activePage === 'about' && aboutSection === 4) || activePage === 'contact-qr'}
+          isDarkBg={isDark || (activePage === 'home' && currentPage === 0) || (activePage === 'about' && aboutSection === 4) || activePage === 'contact-qr'}
         />
       )}
 
@@ -631,7 +631,7 @@ function AppContent() {
         <RightMenu
           activeMenuId={activePage}
           onNavigate={handleNavigation}
-          isDarkBg={isDark || activePage === 'home' || (activePage === 'about' && aboutSection === 4) || activePage === 'contact-qr'}
+          isDarkBg={isDark || (activePage === 'home' && currentPage === 0) || (activePage === 'about' && aboutSection === 4) || activePage === 'contact-qr'}
         />
       )}
 
@@ -671,6 +671,8 @@ function AppContent() {
 
             if (!config) return null;
 
+            const isDarkContext = isDark || (activePage === 'home' && currentPage === 0) || (activePage === 'about' && aboutSection === 4) || activePage === 'contact-qr';
+
             return Array.from({ length: config.total }, (_, idx) => {
               const isActive = config.current === idx;
               return (
@@ -680,7 +682,9 @@ function AppContent() {
                   className={`w-[18px] h-[36px] rounded-full transition-all duration-300 cursor-pointer flex items-center justify-center ${
                     isActive
                       ? 'bg-[#548235] border border-[#548235] shadow-[0_0_10px_rgba(84,130,53,0.35)]'
-                      : 'bg-transparent border border-gray-300 dark:border-white/20 hover:border-gray-400 dark:hover:border-white/40'
+                      : isDarkContext
+                      ? 'bg-transparent border border-white/25 hover:border-white/50'
+                      : 'bg-transparent border border-gray-300 hover:border-gray-500'
                   }`}
                   title={config.titles[idx] || `Section ${idx + 1}`}
                 >
@@ -688,7 +692,9 @@ function AppContent() {
                     className={`font-mono font-bold text-[9.5px] leading-none select-none ${
                       isActive
                         ? 'text-white/90'
-                        : 'text-gray-400 dark:text-gray-500'
+                        : isDarkContext
+                        ? 'text-white/50'
+                        : 'text-gray-500'
                     }`}
                   >
                     {idx + 1}
