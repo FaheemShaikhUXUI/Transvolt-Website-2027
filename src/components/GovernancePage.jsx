@@ -603,28 +603,16 @@ export const GovernancePage = ({ onNavigate }) => {
           className="relative w-full min-h-[300px] sm:min-h-[340px] lg:min-h-[380px] pt-24 pb-10 sm:pt-28 sm:pb-12 flex items-center bg-black overflow-hidden"
         >
           {/* 100% Black Base Canvas */}
-          {/* Base Image: rendered strictly INSIDE the 2px square dots at 100% opacity with 0.5px gap */}
-          <div
-            className="absolute inset-0 w-full h-full pointer-events-none z-[4]"
-            style={{
-              maskImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='5' height='5' viewBox='0 0 5 5' shape-rendering='crispEdges'%3E%3Crect x='0' y='0' width='4' height='4' fill='black'/%3E%3C/svg%3E")`,
-              WebkitMaskImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='5' height='5' viewBox='0 0 5 5' shape-rendering='crispEdges'%3E%3Crect x='0' y='0' width='4' height='4' fill='black'/%3E%3C/svg%3E")`,
-              maskSize: '2.5px 2.5px',
-              WebkitMaskSize: '2.5px 2.5px',
-              maskRepeat: 'repeat',
-              WebkitMaskRepeat: 'repeat',
-              maskPosition: '0 0',
-              WebkitMaskPosition: '0 0',
-            }}
-          >
+          {/* Base Layer: Ultra High Density Halftone Dot Raster Image Technology */}
+          <div className="absolute inset-0 w-full h-full pointer-events-none z-[4] bg-black">
             <img
-              src="/Governance_2.png"
-              alt="Transvolt Governance"
-              className="w-full h-full object-cover object-center opacity-100 grayscale select-none"
+              src="/Governance_halftone.png?v=3"
+              alt="Transvolt Governance Halftone"
+              className="w-full h-full object-cover object-center opacity-75 brightness-110 transition-opacity duration-300 select-none"
             />
           </div>
 
-          {/* Tier 2: 600px Radius Color Pixel Grid Layer (2px pixel + 0.5px gap in full natural color) */}
+          {/* Tier 2: 600px Radius Color Spotlight Reveal (Smooth photographic color under cursor) */}
           <div
             ref={spotlightColorRef}
             className="absolute inset-0 w-full h-full pointer-events-none z-[5] transition-opacity duration-300"
@@ -632,25 +620,11 @@ export const GovernancePage = ({ onNavigate }) => {
               opacity: 0,
             }}
           >
-            <div
-              className="w-full h-full"
-              style={{
-                maskImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='5' height='5' viewBox='0 0 5 5' shape-rendering='crispEdges'%3E%3Crect x='0' y='0' width='4' height='4' fill='black'/%3E%3C/svg%3E")`,
-                WebkitMaskImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='5' height='5' viewBox='0 0 5 5' shape-rendering='crispEdges'%3E%3Crect x='0' y='0' width='4' height='4' fill='black'/%3E%3C/svg%3E")`,
-                maskSize: '2.5px 2.5px',
-                WebkitMaskSize: '2.5px 2.5px',
-                maskRepeat: 'repeat',
-                WebkitMaskRepeat: 'repeat',
-                maskPosition: '0 0',
-                WebkitMaskPosition: '0 0',
-              }}
-            >
-              <img
-                src="/Governance_2.png"
-                alt="Transvolt Governance Focus Color Grid"
-                className="w-full h-full object-cover object-center opacity-100 select-none"
-              />
-            </div>
+            <img
+              src="/Governance_2.png"
+              alt="Transvolt Governance Focus Color"
+              className="w-full h-full object-cover object-center opacity-95 select-none"
+            />
           </div>
 
           {/* Tier 3: 120px Radius Solid Merged Core (ZERO pixel gaps, full solid photo beneath cursor) */}

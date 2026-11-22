@@ -671,6 +671,16 @@ body {
   transform: translateY(-1px);
 }
 
+/* Custom Cursor Replacement for Fine Pointers (Desktop) */
+@media (pointer: fine) {
+  *,
+  *::before,
+  *::after {
+    cursor: none !important;
+  }
+}
+
+
 
 
 

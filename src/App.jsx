@@ -19,6 +19,7 @@ import HiringProcessPage from './components/HiringProcessPage';
 import HiringFormBuilderPage from './components/HiringFormBuilderPage';
 import { Footer } from './components/Footer';
 import { DynamicFavicon } from './components/DynamicFavicon';
+import { CustomCursor } from './components/CustomCursor';
 
 function AppContent() {
   const { isDark } = useTheme();
@@ -577,6 +578,9 @@ function AppContent() {
     >
       {/* Running Arrow Tab Dynamic Favicon */}
       <DynamicFavicon />
+
+      {/* Universal Minimalist White Stroke Custom Cursor (30px radius, 1px white stroke, no fill) */}
+      <CustomCursor />
 
       {/* Floating In-Air Scrollbar Body: 5px width, 30% opacity gray, floating directly over the right edge corridor of the menu bar */}
       {hasScrollbar && (

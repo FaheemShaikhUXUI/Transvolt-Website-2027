@@ -193,14 +193,14 @@ export const MainContactPage = ({ onNavigate }) => {
           className="relative w-full min-h-[300px] sm:min-h-[340px] lg:min-h-[380px] pt-24 pb-10 sm:pt-28 sm:pb-12 flex items-center bg-black overflow-hidden"
         >
           {/* 100% Black Base Canvas */}
-          {/* Tier 1: Base Image rendered strictly INSIDE 2.5px square dots at 100% opacity in grayscale */}
+          {/* Tier 1: Base Image rendered strictly INSIDE 2px square dots with 1px pixel distance / gap */}
           <div
             className="absolute inset-0 w-full h-full pointer-events-none z-[4]"
             style={{
-              maskImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='5' height='5' viewBox='0 0 5 5' shape-rendering='crispEdges'%3E%3Crect x='0' y='0' width='4' height='4' fill='black'/%3E%3C/svg%3E")`,
-              WebkitMaskImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='5' height='5' viewBox='0 0 5 5' shape-rendering='crispEdges'%3E%3Crect x='0' y='0' width='4' height='4' fill='black'/%3E%3C/svg%3E")`,
-              maskSize: '2.5px 2.5px',
-              WebkitMaskSize: '2.5px 2.5px',
+              maskImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='3' height='3' viewBox='0 0 3 3' shape-rendering='crispEdges'%3E%3Crect x='0' y='0' width='2' height='2' fill='black'/%3E%3C/svg%3E")`,
+              WebkitMaskImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='3' height='3' viewBox='0 0 3 3' shape-rendering='crispEdges'%3E%3Crect x='0' y='0' width='2' height='2' fill='black'/%3E%3C/svg%3E")`,
+              maskSize: '3px 3px',
+              WebkitMaskSize: '3px 3px',
               maskRepeat: 'repeat',
               WebkitMaskRepeat: 'repeat',
               maskPosition: '0 0',
@@ -214,7 +214,7 @@ export const MainContactPage = ({ onNavigate }) => {
             />
           </div>
 
-          {/* Tier 2: 600px Radius Color Pixel Grid Layer (in full natural color) */}
+          {/* Tier 2: 600px Radius Color Pixel Grid Layer (in full natural color with 1px pixel distance) */}
           <div
             ref={spotlightColorRef}
             className="absolute inset-0 w-full h-full pointer-events-none z-[5] transition-opacity duration-300"
@@ -223,10 +223,10 @@ export const MainContactPage = ({ onNavigate }) => {
             <div
               className="w-full h-full"
               style={{
-                maskImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='5' height='5' viewBox='0 0 5 5' shape-rendering='crispEdges'%3E%3Crect x='0' y='0' width='4' height='4' fill='black'/%3E%3C/svg%3E")`,
-                WebkitMaskImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='5' height='5' viewBox='0 0 5 5' shape-rendering='crispEdges'%3E%3Crect x='0' y='0' width='4' height='4' fill='black'/%3E%3C/svg%3E")`,
-                maskSize: '2.5px 2.5px',
-                WebkitMaskSize: '2.5px 2.5px',
+                maskImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='3' height='3' viewBox='0 0 3 3' shape-rendering='crispEdges'%3E%3Crect x='0' y='0' width='2' height='2' fill='black'/%3E%3C/svg%3E")`,
+                WebkitMaskImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='3' height='3' viewBox='0 0 3 3' shape-rendering='crispEdges'%3E%3Crect x='0' y='0' width='2' height='2' fill='black'/%3E%3C/svg%3E")`,
+                maskSize: '3px 3px',
+                WebkitMaskSize: '3px 3px',
                 maskRepeat: 'repeat',
                 WebkitMaskRepeat: 'repeat',
                 maskPosition: '0 0',

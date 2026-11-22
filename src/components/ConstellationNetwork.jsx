@@ -21,6 +21,7 @@ export const ConstellationNetwork = ({
   lineColor = null,         // e.g. 'rgba(68, 114, 196, 0.25)' (Branding Blue 25%)
   facetOpacity = null,      // e.g. 0.03 (3% opacity)
   fullHeight = false,       // fill complete top & bottom edge
+  pulseTrigger = null,      // Reactive trigger when frame moves/rotates
 }) => {
   const canvasRef = useRef(null);
   const isDarkRef = useRef(isDark);
@@ -37,6 +38,16 @@ export const ConstellationNetwork = ({
   facetOpacityRef.current = facetOpacity;
   const fullHeightRef = useRef(fullHeight);
   fullHeightRef.current = fullHeight;
+
+  const lastPulseRef = useRef(pulseTrigger);
+  const pulseSurgeRef = useRef({ time: 0, active: false });
+
+  useEffect(() => {
+    if (pulseTrigger !== null && pulseTrigger !== undefined && pulseTrigger !== lastPulseRef.current) {
+      lastPulseRef.current = pulseTrigger;
+      pulseSurgeRef.current = { time: performance.now(), active: true };
+    }
+  }, [pulseTrigger]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -177,19 +188,19 @@ export const ConstellationNetwork = ({
 
         ctx.lineTo(x2, y2);
 
-        // Outer electric plasma aura (scaled down for cursor arcs by 60%)
+        // Outer electric plasma aura
         ctx.strokeStyle = isCursor
-          ? `rgba(56, 189, 248, ${alpha.toFixed(2)})`
+          ? (dark ? `rgba(56, 189, 248, ${alpha.toFixed(2)})` : `rgba(34, 197, 94, ${alpha.toFixed(2)})`)
           : `rgba(74, 222, 128, ${(alpha * 0.95).toFixed(2)})`;
-        ctx.lineWidth = isCursor ? 0.9 : 1.1;
-        ctx.shadowColor = isCursor ? 'rgba(56, 189, 248, 0.45)' : 'rgba(74, 222, 128, 0.85)';
-        ctx.shadowBlur = isCursor ? 4 : 5;
+        ctx.lineWidth = isCursor ? 1.3 : 1.1;
+        ctx.shadowColor = isCursor ? (dark ? 'rgba(56, 189, 248, 0.75)' : 'rgba(34, 197, 94, 0.65)') : 'rgba(74, 222, 128, 0.85)';
+        ctx.shadowBlur = isCursor ? 8 : 5;
         ctx.stroke();
 
         // Core white hot filament
-        if (alpha > 0.42) {
-          ctx.strokeStyle = `rgba(255, 255, 255, ${(alpha * 0.7).toFixed(2)})`;
-          ctx.lineWidth = 0.5;
+        if (alpha > 0.3) {
+          ctx.strokeStyle = `rgba(255, 255, 255, ${(alpha * 0.85).toFixed(2)})`;
+          ctx.lineWidth = 0.7;
           ctx.shadowBlur = 0;
           ctx.stroke();
         }
@@ -248,14 +259,31 @@ export const ConstellationNetwork = ({
             n.y += (cdy / cDist) * force;
           }
         }
+
+        // Kinetic Wave Ripple when frame moves/rotates
+        if (pulseSurgeRef.current.active) {
+          const surgeElapsed = time - pulseSurgeRef.current.time;
+          if (surgeElapsed > 0 && surgeElapsed < 950) {
+            const progress = surgeElapsed / 950;
+            const wave = Math.sin(progress * Math.PI);
+            const centerDist = Math.hypot(n.bx - netW * 0.5, n.by - netH * 0.5);
+            const wavePhase = Math.sin((centerDist * 0.015) - progress * Math.PI * 2);
+            const surgeForce = wave * wavePhase * 18;
+            const angle = Math.atan2(n.by - netH * 0.5, n.bx - netW * 0.5);
+            n.x += Math.cos(angle) * surgeForce;
+            n.y += Math.sin(angle) * surgeForce;
+          } else if (surgeElapsed >= 950) {
+            pulseSurgeRef.current.active = false;
+          }
+        }
       }
 
       // Track nodes touched by cursor
       const touchedNodes = new Set();
 
-      // Dynamic electric lightning arcs to cursor if nearby (reduced by 60% in count, reach, and opacity)
-      if (mouseNearby && mx >= -40 && mx <= netW + 40 && my >= -40 && my <= netH + 40) {
-        const cursorThreshold = isElectric ? 105 : 120; // 60% reduced coverage area
+      // Dynamic electric lightning arcs to cursor if nearby
+      if (mouseNearby && mx >= -50 && mx <= netW + 50 && my >= -50 && my <= netH + 50) {
+        const cursorThreshold = isElectric ? 145 : 120;
         const nearbyCandidates = [];
 
         for (let i = 0; i < nodes.length; i++) {
@@ -266,16 +294,14 @@ export const ConstellationNetwork = ({
           }
         }
 
-        // Limit to max 3-4 closest arcs instead of sprawling starburst
         nearbyCandidates.sort((a, b) => a.dist - b.dist);
-        const maxCursorArcs = isElectric ? 3 : 4;
+        const maxCursorArcs = isElectric ? 6 : 4;
         const activeCursorArcs = nearbyCandidates.slice(0, maxCursorArcs);
 
         for (const item of activeCursorArcs) {
           const { node: n, dist: cdist, index: i } = item;
           touchedNodes.add(i);
-          // 60% reduced opacity and subtle power
-          const cAlpha = Math.pow(1 - cdist / cursorThreshold, 1.4) * (isElectric ? 0.38 : 0.45);
+          const cAlpha = Math.pow(1 - cdist / cursorThreshold, 1.2) * (isElectric ? 0.75 : 0.45);
           if (isElectric) {
             drawLightning(n.x, n.y, mx, my, i * 13, cAlpha, true);
           } else {

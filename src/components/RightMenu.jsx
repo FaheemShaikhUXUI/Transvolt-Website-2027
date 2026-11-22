@@ -38,6 +38,7 @@ export const RightMenu = ({ activeMenuId = 'home', onNavigate, isDarkBg = false 
   // Dynamic Background Darkness Detection for White Theme
   useEffect(() => {
     const detectDarkBg = () => {
+      if (isOpen) return; // Do not run layout-heavy background sampling when menu is open
       const x = window.innerWidth - 40;
       const rect = menuContainerRef.current?.getBoundingClientRect();
       const centerY = rect ? rect.top + rect.height / 2 : window.innerHeight / 2;
@@ -197,6 +198,12 @@ export const RightMenu = ({ activeMenuId = 'home', onNavigate, isDarkBg = false 
               return (
                 <button
                   key={item.id}
+                  onPointerDown={(e) => {
+                    // Instant 0ms navigation on pointer press (no waiting for mouseup/click cycle)
+                    if (onNavigate) {
+                      onNavigate(item.id);
+                    }
+                  }}
                   onClick={() => {
                     if (onNavigate) {
                       onNavigate(item.id);
@@ -204,7 +211,7 @@ export const RightMenu = ({ activeMenuId = 'home', onNavigate, isDarkBg = false 
                   }}
                   className={`flex items-center gap-3.5 h-[38px] ${
                     isOpen ? 'w-full px-2' : 'w-auto px-0.5'
-                  } text-left transition-all duration-200 rounded-xl group cursor-pointer ${
+                  } text-left transition-colors duration-100 rounded-xl group cursor-pointer ${
                     isActive
                       ? isOpen
                         ? isDarkSurface
@@ -215,7 +222,7 @@ export const RightMenu = ({ activeMenuId = 'home', onNavigate, isDarkBg = false 
                       ? 'text-white/90 hover:text-white hover:bg-white/15'
                       : 'text-gray-700 hover:text-gray-900 hover:bg-white/60'
                   }`}
-                  title={item.label}
+                  title={!isOpen ? item.label : undefined}
                 >
                   {/* Icon box (30px) */}
                   <div

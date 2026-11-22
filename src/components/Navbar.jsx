@@ -168,33 +168,22 @@ export const Navbar = ({ onNavigate, isDarkBg = false, activePage = 'home' }) =>
             aria-label="Transvolt Mobility"
           >
             <div className="relative h-7 sm:h-8 flex items-center">
-              {activePage === 'home' ? (
-                /* Transvolt Logo with Green & Blue Chevrons for Home Page 2 */
-                <img
-                  src="/logo_white.svg"
-                  alt="Transvolt Logo"
-                  className="h-7 sm:h-8 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
-                />
-              ) : (
-                <>
-                  {/* Black Logo (for Light Backgrounds) */}
-                  <img
-                    src="/logo_black.svg"
-                    alt="Transvolt Logo"
-                    className={`h-7 sm:h-8 w-auto object-contain transition-opacity duration-300 group-hover:scale-105 ${
-                      effectiveIsDark ? 'opacity-0 pointer-events-none' : 'opacity-100'
-                    }`}
-                  />
-                  {/* White Logo (for Dark Backgrounds - Automatically Enabled) */}
-                  <img
-                    src="/logo_white.svg"
-                    alt="Transvolt Logo"
-                    className={`absolute left-0 top-0 h-7 sm:h-8 w-auto object-contain transition-opacity duration-300 group-hover:scale-105 ${
-                      effectiveIsDark ? 'opacity-100' : 'opacity-0 pointer-events-none'
-                    }`}
-                  />
-                </>
-              )}
+              {/* Black Logo (for Light Backgrounds) */}
+              <img
+                src="/logo_black.svg"
+                alt="Transvolt Logo"
+                className={`h-7 sm:h-8 w-auto object-contain transition-opacity duration-300 group-hover:scale-105 ${
+                  effectiveIsDark ? 'opacity-0 pointer-events-none' : 'opacity-100'
+                }`}
+              />
+              {/* White Logo (for Dark Backgrounds - Automatically Enabled) */}
+              <img
+                src="/logo_white.svg"
+                alt="Transvolt Logo"
+                className={`absolute left-0 top-0 h-7 sm:h-8 w-auto object-contain transition-opacity duration-300 group-hover:scale-105 ${
+                  effectiveIsDark ? 'opacity-100' : 'opacity-0 pointer-events-none'
+                }`}
+              />
             </div>
           </button>
         </div>
