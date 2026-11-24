@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import { useTheme } from '../context/ThemeContext';
 import { Zap } from 'lucide-react';
 
@@ -56,6 +57,7 @@ export const VenomContactButton = ({
   const batteryTargetRef = useRef(null);
 
   // Interaction States
+  const [mounted, setMounted] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [isCharging, setIsCharging] = useState(false);
   const [chargeProgress, setChargeProgress] = useState(20);
@@ -122,6 +124,7 @@ export const VenomContactButton = ({
   }, [updateButtonAnchor]);
 
   useEffect(() => {
+    setMounted(true);
     setRestingPositions();
     const timer1 = setTimeout(setRestingPositions, 100);
     const timer2 = setTimeout(setRestingPositions, 900);
@@ -590,7 +593,7 @@ export const VenomContactButton = ({
       {/* =========================================================================
           2. SVG RUBBER WIRE (4px thickness) & DRAGGABLE CHARGER GUN (Hidden on Contact Page)
           ========================================================================= */}
-      {!hidePlug && (
+      {mounted && typeof document !== 'undefined' && !hidePlug && createPortal(
         <div className="fixed inset-0 pointer-events-none z-50">
           {btnAttachPos.x > 0 && (
             <svg className="absolute inset-0 w-full h-full overflow-visible pointer-events-none">
@@ -730,32 +733,34 @@ export const VenomContactButton = ({
           >
             <ChargingGunSVG color="currentColor" className="w-[44px] h-[28px] select-none" />
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* =========================================================================
           3. CHARGING ARENA & GREEN TRUCK OVERLAY
           ========================================================================= */}
-      <div
-        className={`fixed inset-0 z-40 transition-all duration-500 flex flex-col items-center justify-center ${
-          isDragging && !hidePlug
-            ? 'opacity-100 pointer-events-auto bg-black/75 backdrop-blur-[6px]'
-            : 'opacity-0 pointer-events-none'
-        }`}
-      >
-        {/* Full-width Horizontal Laser Green Line (Vehicle tires rest ON this line) */}
-        <div className="absolute top-1/2 left-0 right-0 w-full h-[2.5px] bg-[#22c55e] -translate-y-1/2 shadow-[0_0_16px_#22c55e,0_0_32px_rgba(34,197,94,0.5)] pointer-events-none" />
-
-        {/* Green Vehicle Stationed with Wheels Directly ON the Surface of the Green Line */}
+      {mounted && typeof document !== 'undefined' && createPortal(
         <div
-          ref={truckRef}
-          className="absolute z-30 transition-transform duration-1000 ease-in-out top-[calc(50%-85px)] sm:top-[calc(50%-116px)] lg:top-[calc(50%-143px)]"
-          style={{
-            transform: truckDeparted
-              ? 'translateX(130vw) scale(1.05)'
-              : 'translateX(0)',
-          }}
+          className={`fixed inset-0 z-40 transition-all duration-500 flex flex-col items-center justify-center ${
+            isDragging && !hidePlug
+              ? 'opacity-100 pointer-events-auto bg-black/75 backdrop-blur-[6px]'
+              : 'opacity-0 pointer-events-none'
+          }`}
         >
+          {/* Full-width Horizontal Laser Green Line (Vehicle tires rest ON this line) */}
+          <div className="absolute top-1/2 left-0 right-0 w-full h-[2.5px] bg-[#22c55e] -translate-y-1/2 shadow-[0_0_16px_#22c55e,0_0_32px_rgba(34,197,94,0.5)] pointer-events-none" />
+
+          {/* Green Vehicle Stationed with Wheels Directly ON the Surface of the Green Line */}
+          <div
+            ref={truckRef}
+            className="absolute z-30 transition-transform duration-1000 ease-in-out left-1/2 top-[calc(50%-85px)] sm:top-[calc(50%-116px)] lg:top-[calc(50%-143px)]"
+            style={{
+              transform: truckDeparted
+                ? 'translateX(130vw) scale(1.05)'
+                : 'translateX(-50%)',
+            }}
+          >
           {/* Green Electric Truck SVG (15% Smaller: w-[272px] sm:w-[374px] lg:w-[460px]) */}
           <div className="relative">
             {/* Base Vehicle Layer: Single-Vehicles-Black-Container.svg (Untouched Black Container) */}
@@ -899,7 +904,9 @@ export const VenomContactButton = ({
         >
           Cancel
         </button>
-      </div>
-    </>
-  );
+      </div>,
+      document.body
+    )}
+  </>
+);
 };
