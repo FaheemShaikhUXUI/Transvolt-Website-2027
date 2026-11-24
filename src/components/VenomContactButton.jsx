@@ -123,9 +123,17 @@ export const VenomContactButton = ({
 
   useEffect(() => {
     setRestingPositions();
+    const timer1 = setTimeout(setRestingPositions, 100);
+    const timer2 = setTimeout(setRestingPositions, 900);
     window.addEventListener('resize', setRestingPositions);
-    return () => window.removeEventListener('resize', setRestingPositions);
-  }, [setRestingPositions]);
+    window.addEventListener('scroll', setRestingPositions, { passive: true });
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+      window.removeEventListener('resize', setRestingPositions);
+      window.removeEventListener('scroll', setRestingPositions);
+    };
+  }, [setRestingPositions, hidePlug]);
 
   // Handle Drag Start when user clicks and holds on the Gun
   const handleGunPointerDown = (e) => {

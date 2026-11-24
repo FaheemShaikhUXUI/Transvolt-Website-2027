@@ -432,7 +432,7 @@ export const HomePage = ({ currentPage = 0, onNavigate }) => {
                     className="group relative flex flex-col justify-between cursor-pointer transition-all duration-300 hover:-translate-y-1"
                   >
                     {/* Hero Thumbnail (10px Rounded Corners, 30% Taller: 158px/175px, Thin Light Gray Border, No Dark Shadow) */}
-                    <div className="relative w-full h-[158px] sm:h-[175px] rounded-[10px] border border-gray-300 dark:border-white/20 overflow-hidden bg-black/20">
+                    <div className="relative w-full h-[158px] sm:h-[175px] rounded-[10px] border border-gray-300 dark:border-[#283A52] overflow-hidden bg-black/20">
                       <img
                         src="/news-placeholder.jpg"
                         alt={item.title}

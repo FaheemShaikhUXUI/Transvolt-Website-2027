@@ -1,6 +1,6 @@
 // Transvolt Journey Page Data - Chronological Milestones, Eras & Strategic Roadmap
 export const JOURNEY_METADATA = {
-  badge: 'THE TRANSVOLT EVOLUTION • 2021 — 2027',
+  badge: 'THE TRANSVOLT EVOLUTION • 2023 — 2027',
   title: 'From First Volt to Nationwide Clean Corridors.',
   subtitle:
     'The milestones, engineering breakthroughs, and bold concession bets that transformed commercial electric transit across India. Explore our decade of accelerating zero-emission mobility.',
@@ -14,59 +14,37 @@ export const JOURNEY_METADATA = {
 
 export const JOURNEY_ERAS = [
   {
-    year: '2021',
+    year: '2023',
     phase: 'Phase 01',
-    theme: 'The Genesis & OEM-Agnostic Blueprint',
+    theme: 'The Genesis & Concession Breakthrough',
     title: 'Architecting India’s Commercial EV Concession Model',
-    tagline: 'When the commercial EV ecosystem was in its infancy, Transvolt saw that the fleet operating model was the missing link.',
+    tagline: 'When commercial EV transit lacked operating frameworks, Transvolt proved the Gross Cost Contract model in Mumbai MMR.',
     category: 'Corporate Genesis',
     image: '/life/1.JPG',
     summary:
-      'Transvolt was incorporated by seasoned infrastructure finance and transportation engineering veterans with a single bold hypothesis: municipal transit and heavy freight can only scale if fleet ownership, depot charging, and intelligent maintenance are unified under a single tech-driven operating platform.',
+      'Transvolt was incorporated in 2023 by infrastructure finance and transportation engineering veterans. We rapidly proved the model by winning landmark Gross Cost Contract (GCC) public bus concessions in the Mumbai Metropolitan Region (MBMT - Mira Bhayandar and UMT - Ulhasnagar), proving electric transit can deliver superior uptime with zero upfront debt for cities.',
     keyMilestones: [
-      'Incorporation of Transvolt Mobility Private Limited with initial seed institutional capital.',
-      'Developed proprietary OEM-agnostic fleet management thesis decoupled from single vehicle manufacturers.',
-      'Completed feasibility studies across 12 high-density urban transit corridors in Western India.',
-      'Engineered initial high-voltage depot charging schematics and telemetry protocol architecture.',
+      'Incorporation of Transvolt Mobility Private Limited with institutional seed capital in 2023.',
+      'Awarded landmark long-term municipal GCC electric bus operating concessions in Mumbai MMR (MBMT & UMT).',
+      'Developed proprietary 100% OEM-agnostic fleet management thesis decoupled from single vehicle manufacturers.',
+      'Constructed Transvolt’s first flagship high-voltage fleet depot equipped with dedicated 33kV substations.',
     ],
     impactKPIs: [
-      { label: 'Founded', value: 'Dec 2021' },
-      { label: 'Initial Corridors', value: '12 Analyzed' },
+      { label: 'Founded', value: '2023' },
+      { label: 'Initial Fleet', value: '30+ E-Buses' },
       { label: 'Operating Thesis', value: '100% OEM-Agnostic' },
     ],
   },
   {
-    year: '2022',
+    year: '2024',
     phase: 'Phase 02',
-    theme: 'Concession Breakthrough in Mumbai MMR',
-    title: 'Award & Launch of Historic Municipal GCC Contracts',
-    tagline: 'Securing long-term Gross Cost Contract (GCC) public bus concessions in the Mumbai Metropolitan Region.',
-    category: 'Public Bus Concessions',
-    image: '/life/2.JPG',
-    summary:
-      'Transvolt made industry history by winning landmark Gross Cost Contract (GCC) tenders with municipal corporations in the Mumbai Metropolitan Region (MBMT - Mira Bhayandar Municipal Transport and UMT - Ulhasnagar Municipal Transport). We proved that electric bus concessions can deliver superior uptime with zero financial liability to municipal transit budgets.',
-    keyMilestones: [
-      'Awarded long-term municipal electric bus operating concessions in Mira-Bhayandar and Ulhasnagar.',
-      'Constructed Transvolt’s first flagship high-voltage fleet depot equipped with dedicated 33kV substations.',
-      'Deployed initial batch of 9m and 12m air-conditioned zero-emission public transport buses.',
-      'Established Transvolt Safety Protocol (TSP-1) for high-voltage commercial vehicle maintenance.',
-    ],
-    impactKPIs: [
-      { label: 'Concessions Won', value: '2 Municipalities' },
-      { label: 'Initial Fleet', value: '30 E-Buses' },
-      { label: 'Depot Substation', value: '33 kV Dedicated' },
-    ],
-  },
-  {
-    year: '2023',
-    phase: 'Phase 03',
-    theme: 'Megawatt Infrastructure & Real-Time Telemetry',
-    title: 'Deploying Megawatt Fast Charging & Cloud Operations',
+    theme: 'Megawatt Infrastructure & Telematics',
+    title: 'Deploying Megawatt Fast Charging & Cloud Telemetry 2.0',
     tagline: 'Moving from individual buses to unified megawatt charging depots backed by real-time cell-level telemetry.',
     category: 'Infrastructure & Tech',
-    image: '/life/5.JPG',
+    image: '/life/2.JPG',
     summary:
-      'In 2023, Transvolt scaled its charging infrastructure into high-capacity megawatt depots capable of simultaneous dual-gun DC fast charging. Simultaneously, we released Telematics 2.0—a cloud dashboard monitoring over 45 live telemetry streams per bus, guaranteeing 99.4% on-route fleet readiness.',
+      'In 2024, Transvolt scaled its charging infrastructure into high-capacity megawatt depots capable of simultaneous dual-gun DC fast charging. Simultaneously, we released Telematics 2.0—a cloud dashboard monitoring over 45 live telemetry streams per bus, guaranteeing 99.4% on-route fleet readiness.',
     keyMilestones: [
       'Commissioned 1.2+ MW aggregate DC fast-charging capacity across key operational depots.',
       'Integrated real-time CAN bus telemetry for dynamic battery thermal regulation and state-of-charge predictions.',
@@ -80,18 +58,18 @@ export const JOURNEY_ERAS = [
     ],
   },
   {
-    year: '2024',
-    phase: 'Phase 04',
+    year: '2025',
+    phase: 'Phase 03',
     theme: 'Heavy Freight & Pan-India Footprint',
     title: 'Entering Heavy Industrial Freight & Multi-State Expansion',
     tagline: 'Scaling commercial fleet operations into heavy 55T haulage testbeds and interstate industrial corridors.',
     category: 'Heavy Freight & Interstate',
-    image: '/life/6.JPG',
+    image: '/life/5.JPG',
     summary:
       'Building on municipal transit excellence, Transvolt expanded into heavy industrial freight. We initiated electric haulage pilot corridors in Maharashtra, Gujarat, and Rajasthan, proving that 55-ton gross combination weight electric prime movers deliver 38% total-cost-of-ownership savings compared to traditional heavy diesel trucks.',
     keyMilestones: [
       'Expanded presence into 7 states including Maharashtra, Delhi-NCR, Gujarat, Madhya Pradesh, Rajasthan, Odisha, Meghalaya.',
-      'Launched heavy 55-ton industrial haulage testbeds for cement and bulk industrial logistics.',
+      'Launched heavy 55-ton industrial haulage testbeds for cement, steel, and bulk logistics.',
       'Fleet operations crossed 12 million clean kilometers with zero critical battery safety incidents.',
       'Forged development financial institution (DFI) partnerships for growth capital expansion.',
     ],
@@ -102,13 +80,13 @@ export const JOURNEY_ERAS = [
     ],
   },
   {
-    year: '2025',
-    phase: 'Phase 05',
+    year: '2026',
+    phase: 'Phase 04',
     theme: 'Next-Gen Platform & National Consolidation',
     title: 'Fleet Scaling & Telematics 3.0 Operating System',
     tagline: 'Connecting 500+ commercial EV assets across high-frequency urban corridors with predictive dispatch algorithms.',
     category: 'Operating System',
-    image: '/life/7.JPG',
+    image: '/life/6.JPG',
     summary:
       'Transvolt is accelerating towards a 500+ commercial vehicle operating footprint. With the deployment of Telematics 3.0, we have introduced automated dynamic depot queuing, predictive battery degradation forecasting, and real-time carbon abatement accounting certified for carbon credit verification.',
     keyMilestones: [
@@ -124,13 +102,13 @@ export const JOURNEY_ERAS = [
     ],
   },
   {
-    year: '2026-27',
-    phase: 'Vision',
+    year: '2027',
+    phase: 'Phase 05',
     theme: 'Mission 2027: India’s Decarbonized Backbone',
     title: 'The Road Ahead: 1,500+ Heavy EVs & Smart Microgrid Depots',
     tagline: 'Powering India’s premier freight corridors and municipal smart transit with 100% renewable-fed microgrid charging.',
     category: 'Strategic Horizon',
-    image: '/life/8.jpg',
+    image: '/life/7.JPG',
     summary:
       'Our 2027 roadmap represents the next leap in Indian clean transit: scaling our operating fleet to 1,500+ zero-emission vehicles, establishing automated pantograph charging hubs, and integrating solar-battery microgrids to decouple fleet charging entirely from peak fossil-fuel grid strain.',
     keyMilestones: [
@@ -143,6 +121,28 @@ export const JOURNEY_ERAS = [
       { label: '2027 Fleet Target', value: '1,500+ EVs' },
       { label: 'Depot Microgrids', value: '100% Renewable' },
       { label: 'Annual CO₂ Offset', value: '65,000 MT' },
+    ],
+  },
+  {
+    year: '2028+',
+    phase: 'Vision',
+    theme: 'Zero-Emission Ecosystem & Smart Microgrids',
+    title: 'The Circular Clean Mobility & Smart Microgrid Ecosystem',
+    tagline: 'Decoupling heavy transport from fossil grids via 2nd-life battery BESS microgrids and green corridors.',
+    category: 'Long-term Horizon',
+    image: '/life/8.jpg',
+    summary:
+      'Looking beyond 2027, Transvolt is engineering a completely closed-loop clean energy transport network. By repurposing retired vehicle batteries into stationary energy storage systems (BESS) and deploying autonomous megawatt charging corridors, we ensure 24/7 solar-powered commercial mobility nationwide.',
+    keyMilestones: [
+      'Second-life battery repurposing program establishing circular depot BESS microgrids.',
+      'High-speed Western & Eastern Dedicated Freight Corridors fully electrified with automated megawatt charging.',
+      'Expansion into pan-India heavy logistics linking all major maritime ports with industrial dry ports.',
+      'Zero-carbon transport orchestration powering smart cities and Fortune 500 industrial supply chains.',
+    ],
+    impactKPIs: [
+      { label: 'Vision Horizon', value: '2028 & Beyond' },
+      { label: 'Grid Independence', value: '100% Microgrid' },
+      { label: 'Corridor Reach', value: 'Pan-India Ports' },
     ],
   },
 ];

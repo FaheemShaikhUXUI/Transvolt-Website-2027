@@ -388,19 +388,16 @@ export const NewsPage = ({ onNavigate }) => {
           {/* Text Content Directly OVER the Image */}
           <div className="relative z-10 max-w-[1780px] mx-auto px-5 sm:px-[34px] lg:px-12 pr-16 sm:pr-24 lg:pr-28 w-full">
             <div className="max-w-2xl lg:max-w-3xl">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/70 border border-[#548235]/50 text-[#548235] dark:text-[#76B84A] text-xs font-bold tracking-wider uppercase mb-5 backdrop-blur-md shadow-lg">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/70 border border-[#548235]/50 text-[#548235] dark:text-[#76B84A] text-xs font-semibold tracking-wider uppercase mb-3 backdrop-blur-md shadow-lg">
                 <span className="w-2 h-2 rounded-full bg-[#548235] animate-pulse" />
-                <span>Media & Intelligence Room</span>
+                <span>Media &amp; Intelligence Room</span>
               </div>
 
-              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-semibold tracking-tight leading-[1.12] text-white drop-shadow-xl">
-                Headlines Shaping<br />
-                <span className="text-[#548235] text-transparent bg-clip-text bg-gradient-to-r from-[#548235] via-[#66b338] to-[#22c55e]">
-                  India&apos;s EV Future
-                </span>
+              <h1 className="text-2xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-[1.15] text-transparent bg-clip-text bg-gradient-to-r from-[#4472C4] to-[#548235] drop-shadow-xl">
+                Headlines Shaping India&apos;s EV Future
               </h1>
 
-              <p className="mt-4 sm:mt-5 text-sm sm:text-base lg:text-lg leading-relaxed text-gray-200 font-normal drop-shadow-md max-w-2xl">
+              <p className="mt-2.5 sm:mt-3 text-xs sm:text-sm lg:text-[15px] leading-relaxed text-gray-200 font-normal drop-shadow-md max-w-2xl">
                 Institutional partnerships, municipal gross cost contract concessions, global equity infusions, and operational breakthroughs powering zero-emission transport at scale.
               </p>
             </div>
@@ -417,7 +414,7 @@ export const NewsPage = ({ onNavigate }) => {
           {/* Header Row: Headline "Our latest News" on Left & 7 Topic Tiles on Right Top-Aligned */}
           <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
             <div className="shrink-0">
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold tracking-tight text-gray-900 dark:text-white">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[#4472C4] to-[#548235]">
                 Our latest News
               </h2>
               <p className="mt-1 text-xs sm:text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">

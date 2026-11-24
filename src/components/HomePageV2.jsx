@@ -838,7 +838,7 @@ const Section2ImageCollage = ({ isDark }) => {
   );
 };
 
-export const HomePageV2 = ({ currentPage = 0, onNavigate }) => {
+export const HomePageV2 = ({ currentPage = 0, onNavigate, introStage = 4 }) => {
   const { isDark } = useTheme();
   const metrics = [
     { label: "Number of EV's", target: 4725, suffix: '+', icon: Bus },
@@ -1078,10 +1078,10 @@ export const HomePageV2 = ({ currentPage = 0, onNavigate }) => {
             muted
             playsInline
             poster="/home_v2_bg.jpg"
-            className="w-full h-full object-cover select-none"
+            className="w-full h-full object-cover select-none transition-all duration-1000 ease-out"
             style={{
-              maskImage: 'linear-gradient(to right, rgba(0, 0, 0, 0.10) 0%, rgba(0, 0, 0, 0.45) 100%)',
-              WebkitMaskImage: 'linear-gradient(to right, rgba(0, 0, 0, 0.10) 0%, rgba(0, 0, 0, 0.45) 100%)',
+              maskImage: introStage >= 3 ? 'linear-gradient(to right, rgba(0, 0, 0, 0.10) 0%, rgba(0, 0, 0, 0.45) 100%)' : 'none',
+              WebkitMaskImage: introStage >= 3 ? 'linear-gradient(to right, rgba(0, 0, 0, 0.10) 0%, rgba(0, 0, 0, 0.45) 100%)' : 'none',
             }}
           />
         </div>
@@ -1113,7 +1113,12 @@ export const HomePageV2 = ({ currentPage = 0, onNavigate }) => {
             <div className="w-full max-w-xl lg:max-w-[580px] xl:max-w-[640px] shrink-0 space-y-2.5 sm:space-y-3 z-10">
               {/* Main Headline - Crisp White */}
               <h1
-                className="text-[26px] sm:text-[34px] lg:text-[38px] xl:text-[44px] font-bold tracking-tight text-white pb-0.5 leading-[1.12]"
+                style={{
+                  transitionDelay: introStage >= 3 ? '60ms' : '0ms',
+                }}
+                className={`text-[26px] sm:text-[34px] lg:text-[38px] xl:text-[44px] font-bold tracking-tight pb-0.5 leading-[1.12] text-transparent bg-clip-text bg-gradient-to-r from-[#4472C4] to-[#548235] transition-all duration-700 ease-out transform ${
+                  introStage >= 3 ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+                }`}
               >
                 Empowering to move
                 <br />
@@ -1123,14 +1128,28 @@ export const HomePageV2 = ({ currentPage = 0, onNavigate }) => {
               </h1>
 
               {/* Description Subtext - Crisp White */}
-              <p className="text-xs sm:text-[13px] lg:text-[13.5px] leading-relaxed max-w-xl font-normal text-white/95">
+              <p
+                style={{
+                  transitionDelay: introStage >= 3 ? '220ms' : '0ms',
+                }}
+                className={`text-xs sm:text-[13px] lg:text-[13.5px] leading-relaxed max-w-xl font-normal text-white/95 transition-all duration-700 ease-out transform ${
+                  introStage >= 3 ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+                }`}
+              >
                 India's First OEM agnostic EV Platform for Heavy Commercial Vehicles -
                 Electric Buses and Electric Trucks; Transvolt owns and operates the
                 e-HCVs in B to G and B to B segments across India.
               </p>
 
               {/* Institutional Investors Content */}
-              <div className="w-full text-white space-y-1 py-1">
+              <div
+                style={{
+                  transitionDelay: introStage >= 3 ? '380ms' : '0ms',
+                }}
+                className={`w-full text-white space-y-1 py-1 transition-all duration-700 ease-out transform ${
+                  introStage >= 3 ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+                }`}
+              >
                 <h2 className="text-xs sm:text-sm lg:text-[15px] font-bold leading-snug text-white">
                   A Milestone for Electric Mobility Backed by Global Institutional Investors
                 </h2>
@@ -1144,7 +1163,14 @@ export const HomePageV2 = ({ currentPage = 0, onNavigate }) => {
                 </p>
 
                 {/* Backed By Logos */}
-                <div className="pt-1.5 flex items-center gap-6 sm:gap-8">
+                <div
+                  style={{
+                    transitionDelay: introStage >= 3 ? '520ms' : '0ms',
+                  }}
+                  className={`pt-1.5 flex items-center gap-6 sm:gap-8 transition-all duration-700 ease-out transform ${
+                    introStage >= 3 ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'
+                  }`}
+                >
                   <span className="text-[10px] sm:text-[11px] font-bold tracking-wider text-white/70 uppercase">
                     BACKED BY
                   </span>
@@ -1164,7 +1190,14 @@ export const HomePageV2 = ({ currentPage = 0, onNavigate }) => {
               </div>
 
               {/* Explore Button & Zero Emission Strip */}
-              <div className="pt-1.5 flex items-center gap-4">
+              <div
+                style={{
+                  transitionDelay: introStage >= 3 ? '660ms' : '0ms',
+                }}
+                className={`pt-1.5 flex items-center gap-4 transition-all duration-700 ease-out transform ${
+                  introStage >= 3 ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+                }`}
+              >
                 <button
                   onClick={() => onNavigate && onNavigate('services')}
                   className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-[#548235] to-[#22c55e] hover:from-[#44692a] hover:to-[#16a34a] text-white text-xs font-bold shadow-lg shadow-[#548235]/30 hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer"
@@ -1178,14 +1211,17 @@ export const HomePageV2 = ({ currentPage = 0, onNavigate }) => {
                 </span>
               </div>
 
-              {/* Frameless Vertical Flip: 3 Latest News with identical smooth motion, 2.6s hold, +30% lower */}
+              {/* Frameless Vertical Flip: 3 Latest News with green text above, white text below */}
               <div
-                className="pt-[90px] sm:pt-[125px] md:pt-[156px] w-[840px] lg:w-[920px] max-w-none h-12 sm:h-14 relative overflow-hidden select-none"
+                className={`pt-[90px] sm:pt-[125px] md:pt-[156px] w-[840px] lg:w-[920px] max-w-none h-16 sm:h-20 relative overflow-hidden select-none transition-all duration-700 ease-out transform ${
+                  introStage >= 3 ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+                }`}
                 onMouseEnter={() => setIsNewsHovered(true)}
                 onMouseLeave={() => setIsNewsHovered(false)}
                 style={{
-                  maskImage: 'linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%)',
-                  WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%)',
+                  maskImage: 'linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)',
+                  WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)',
+                  transitionDelay: introStage >= 3 ? '800ms' : '0ms',
                 }}
               >
                 {latestNews[activeNewsIdx] && (
@@ -1198,35 +1234,39 @@ export const HomePageV2 = ({ currentPage = 0, onNavigate }) => {
                         newsAnimState === 'center'
                           ? 'translateY(0px)'
                           : newsAnimState === 'exit'
-                          ? 'translateY(-16px)'
-                          : 'translateY(16px)',
+                          ? 'translateY(-24px)'
+                          : 'translateY(24px)',
                       opacity: newsAnimState === 'center' ? 1 : 0,
                       transition:
                         newsAnimState === 'enter'
                           ? 'none'
                           : 'transform 750ms cubic-bezier(0.16, 1, 0.3, 1), opacity 750ms cubic-bezier(0.16, 1, 0.3, 1)',
                     }}
-                    className="absolute inset-0 flex items-center gap-3 text-sm sm:text-[15.5px] text-white/95 cursor-pointer group/news transition-colors whitespace-nowrap"
+                    className="absolute inset-0 flex flex-col justify-center gap-1 sm:gap-1.5 cursor-pointer group/news transition-colors select-none"
                   >
-                    {/* Bullet Dot: Electric impact on spark, molten yellow lava glow on touch unglowing over 2.4s */}
-                    <div className="relative flex items-center justify-center shrink-0 w-2.5 h-2.5">
-                      <span
-                        ref={dotRef}
-                        data-news-dot="true"
-                        className={`w-2 h-2 rounded-full shrink-0 transition-all duration-300 ${
-                          isSparkActive
-                            ? 'bg-emerald-200 scale-125 shadow-[0_0_12px_#34d399,0_0_22px_#10b981,0_0_35px_#38bdf8]'
-                            : isSmokeActive
-                            ? 'bg-yellow-300 shadow-[0_0_6px_#fde047,0_0_11px_#eab308]'
-                            : 'bg-emerald-400 animate-pulse'
-                        }`}
-                      />
+                    {/* Top Row: Green Category text with glowing status indicator dot */}
+                    <div className="flex items-center gap-2">
+                      <div className="relative flex items-center justify-center shrink-0 w-2.5 h-2.5">
+                        <span
+                          ref={dotRef}
+                          data-news-dot="true"
+                          className={`w-2 h-2 rounded-full shrink-0 transition-all duration-300 ${
+                            isSparkActive
+                              ? 'bg-emerald-200 scale-125 shadow-[0_0_12px_#34d399,0_0_22px_#10b981,0_0_35px_#38bdf8]'
+                              : isSmokeActive
+                              ? 'bg-yellow-300 shadow-[0_0_6px_#fde047,0_0_11px_#eab308]'
+                              : 'bg-emerald-400 animate-pulse'
+                          }`}
+                        />
+                      </div>
+
+                      <span className="text-[12px] sm:text-[12.5px] font-mono font-bold tracking-wider text-emerald-400 uppercase shrink-0">
+                        {latestNews[activeNewsIdx].category || 'NEWS'}
+                      </span>
                     </div>
 
-                    <span className="text-[12.5px] sm:text-[13px] font-mono font-bold tracking-wider text-emerald-400 uppercase shrink-0">
-                      {latestNews[activeNewsIdx].category || 'NEWS'}
-                    </span>
-                    <span className="font-medium text-white/95 group-hover/news:text-white group-hover/news:underline underline-offset-4 decoration-emerald-400 whitespace-nowrap">
+                    {/* Bottom Row: White Title text */}
+                    <span className="text-sm sm:text-[15.5px] font-medium text-white/95 group-hover/news:text-white group-hover/news:underline underline-offset-4 decoration-emerald-400 whitespace-nowrap">
                       {latestNews[activeNewsIdx].title}
                     </span>
                   </div>
@@ -1235,7 +1275,16 @@ export const HomePageV2 = ({ currentPage = 0, onNavigate }) => {
             </div>
 
             {/* Right Column: 3 Standing Video Tiles with Constellation Network Effect Behind (Overall +30% larger) */}
-            <div className="hidden md:flex flex-col items-end shrink-0 relative origin-right scale-[0.85] lg:scale-[0.92] xl:scale-100">
+            <div
+              style={{
+                transitionDelay: introStage >= 3 ? '60ms' : '0ms',
+              }}
+              className={`hidden md:flex flex-col items-end shrink-0 relative origin-right scale-[0.85] lg:scale-[0.92] xl:scale-100 transition-all duration-900 ease-out transform ${
+                introStage >= 3
+                  ? 'translate-x-0 opacity-100'
+                  : '-translate-x-44 opacity-0 pointer-events-none'
+              }`}
+            >
               {/* Dynamic Dense Electric Constellation Network Behind Standing Tiles */}
               <ConstellationNetwork
                 isDark={true}
@@ -1447,11 +1496,7 @@ export const HomePageV2 = ({ currentPage = 0, onNavigate }) => {
                     CORE PILLARS & PURPOSE
                   </span>
                 </div>
-                <h2 className={`text-2xl sm:text-[32px] lg:text-[40px] font-extrabold tracking-tight uppercase leading-none ${
-                  isDark
-                    ? 'text-transparent bg-clip-text bg-gradient-to-r from-white via-emerald-300 to-white'
-                    : 'text-gray-900'
-                }`}>
+                <h2 className="text-2xl sm:text-[32px] lg:text-[40px] font-bold tracking-tight uppercase leading-none text-transparent bg-clip-text bg-gradient-to-r from-[#4472C4] to-[#548235]">
                   WHO WE ARE
                 </h2>
                 <div className="space-y-1.5 pt-0.5 max-w-3xl">
@@ -1576,11 +1621,7 @@ export const HomePageV2 = ({ currentPage = 0, onNavigate }) => {
               {/* Header & Sub-paragraph */}
               <div className="flex flex-col space-y-1.5 mb-3 max-w-5xl">
                 <div className="flex items-center gap-3">
-                  <h2 className={`text-2xl sm:text-[32px] lg:text-[38px] font-extrabold tracking-tight uppercase leading-none pt-0.5 inline-block ${
-                    isDark
-                      ? 'text-transparent bg-clip-text bg-gradient-to-r from-white via-emerald-300 to-white'
-                      : 'text-gray-900'
-                  }`}>
+                  <h2 className="text-2xl sm:text-[32px] lg:text-[38px] font-bold tracking-tight uppercase leading-none pt-0.5 inline-block text-transparent bg-clip-text bg-gradient-to-r from-[#4472C4] to-[#548235]">
                     Our News
                   </h2>
                   <span className={`px-3 py-0.5 rounded-full text-[10.5px] font-bold uppercase tracking-wider backdrop-blur-md ${
@@ -1606,13 +1647,13 @@ export const HomePageV2 = ({ currentPage = 0, onNavigate }) => {
                     onClick={() => onNavigate && onNavigate('news')}
                     className={`group relative flex flex-col justify-between cursor-pointer transition-all duration-300 hover:-translate-y-1 rounded-xl overflow-hidden backdrop-blur-md min-h-[268px] sm:min-h-[280px] ${
                       isDark
-                        ? 'bg-[#0E1420]/80 border border-white/12 hover:border-[#548235]/60 shadow-[0_6px_20px_rgba(0,0,0,0.4)] hover:shadow-[0_10px_26px_rgba(84,130,53,0.18)]'
+                        ? 'bg-[#0E1420]/80 border border-[#283A52] hover:border-[#548235]/70 shadow-[0_6px_20px_rgba(0,0,0,0.4)] hover:shadow-[0_10px_26px_rgba(84,130,53,0.18)]'
                         : 'bg-white/95 border border-slate-200/90 hover:border-[#548235]/60 shadow-[0_4px_16px_rgba(0,0,0,0.05)] hover:shadow-[0_10px_26px_rgba(84,130,53,0.14)]'
                     }`}
                   >
                     {/* News Image with Date Pill - 100% Black BG with 70% Opacity Image */}
                     <div className={`relative w-full h-[126px] sm:h-[134px] lg:h-[142px] overflow-hidden border-b bg-black ${
-                      isDark ? 'border-white/10' : 'border-slate-100'
+                      isDark ? 'border-[#1E2C40]' : 'border-slate-100'
                     }`}>
                       <img
                         src={item.image || '/news-placeholder.jpg'}
@@ -1622,7 +1663,7 @@ export const HomePageV2 = ({ currentPage = 0, onNavigate }) => {
                       <div className="absolute top-2.5 right-2.5 flex items-center gap-1.5">
                         <span className={`px-2 py-0.5 text-[9px] font-mono font-bold tracking-wider backdrop-blur-md rounded border shadow-sm ${
                           isDark
-                            ? 'bg-black/75 text-white border-white/20'
+                            ? 'bg-black/75 text-white border-[#283A52]'
                             : 'bg-white/90 text-gray-900 border-gray-200'
                         }`}>
                           {item.date || item.year}
@@ -1651,7 +1692,7 @@ export const HomePageV2 = ({ currentPage = 0, onNavigate }) => {
                       </div>
 
                       <div className={`mt-2.5 pt-2 border-t flex items-center justify-between ${
-                        isDark ? 'border-white/10' : 'border-slate-100'
+                        isDark ? 'border-[#1E2C40]' : 'border-slate-100'
                       }`}>
                         <span className={`text-[10.5px] font-bold transition-colors ${
                           isDark ? 'text-gray-300 group-hover:text-[#72B347]' : 'text-gray-600 group-hover:text-[#548235]'
@@ -1694,7 +1735,13 @@ export const HomePageV2 = ({ currentPage = 0, onNavigate }) => {
 
         {/* BOTTOM SECTION: 5 Numbers Tiles ONLY Shown on Section 1 / Slide 0 */}
         {currentPage === 0 && (
-          <div className="w-full pt-2 mb-4 sm:mb-5">
+          <div
+            className={`w-full pt-2 mb-4 sm:mb-5 transition-all duration-700 ease-out transform ${
+              introStage >= 2
+                ? 'translate-y-0 opacity-100'
+                : 'translate-y-24 opacity-0 pointer-events-none'
+            }`}
+          >
             {/* 5 Equal Distributed Tiles Aligned till Theme Button */}
             <div className="grid grid-cols-5 gap-3 sm:gap-4 w-full items-center px-1 sm:px-2">
               {metrics.map((metric, idx) => {
@@ -1702,7 +1749,12 @@ export const HomePageV2 = ({ currentPage = 0, onNavigate }) => {
                 return (
                   <div
                     key={idx}
-                    className="flex flex-col items-center justify-center py-2.5 sm:py-3 px-2 sm:px-3 text-center rounded-xl sm:rounded-2xl backdrop-blur-md border group cursor-default transition-all duration-200 hover:-translate-y-0.5 bg-[#548235]/[0.11] border-[#548235]/55 shadow-[0_0_14px_rgba(84,130,53,0.35),inset_0_0_8px_rgba(84,130,53,0.15)] hover:bg-[#548235]/[0.18] hover:border-[#548235]/90 hover:shadow-[0_0_22px_rgba(84,130,53,0.60),inset_0_0_12px_rgba(84,130,53,0.25)]"
+                    style={{
+                      transitionDelay: introStage >= 2 ? `${idx * 60}ms` : '0ms',
+                    }}
+                    className={`flex flex-col items-center justify-center py-2.5 sm:py-3 px-2 sm:px-3 text-center rounded-xl sm:rounded-2xl backdrop-blur-md border group cursor-default transition-all duration-600 hover:-translate-y-0.5 bg-[#548235]/[0.11] border-[#548235]/55 shadow-[0_0_14px_rgba(84,130,53,0.35),inset_0_0_8px_rgba(84,130,53,0.15)] hover:bg-[#548235]/[0.18] hover:border-[#548235]/90 hover:shadow-[0_0_22px_rgba(84,130,53,0.60),inset_0_0_12px_rgba(84,130,53,0.25)] transform ${
+                      introStage >= 2 ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'
+                    }`}
                   >
                     <Icon
                       className="w-5 h-5 sm:w-6 sm:h-6 mb-1.5 group-hover:scale-110 drop-shadow-md transition-transform text-white opacity-95"

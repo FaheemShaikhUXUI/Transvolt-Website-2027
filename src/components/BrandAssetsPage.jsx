@@ -204,7 +204,7 @@ export const BrandAssetsPage = ({ onBack }) => {
         <section className="space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-200 pb-4">
             <div>
-              <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 uppercase">
+              <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[#4472C4] to-[#548235] uppercase">
                 Official Color Palette
               </h2>
               <p className="text-xs sm:text-sm text-gray-500 pt-0.5">
@@ -301,7 +301,7 @@ export const BrandAssetsPage = ({ onBack }) => {
         {/* SECTION 2: AUTHENTIC BASIC LOGOS */}
         <section className="space-y-6">
           <div className="border-b border-gray-200 pb-3">
-            <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 uppercase">
+            <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[#4472C4] to-[#548235] uppercase">
               1. Basic Logo Set
             </h2>
             <p className="text-xs sm:text-sm text-gray-500 pt-0.5">

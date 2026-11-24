@@ -991,7 +991,7 @@ export const AboutPage = ({ currentSection = 0, onNavigate }) => {
             <div className="w-full lg:max-w-[52%] xl:max-w-[50%] flex flex-col space-y-3.5 sm:space-y-4">
               {/* Main Headline */}
               <div className="flex flex-col space-y-2 pb-2">
-                <h1 className="text-xl sm:text-2xl lg:text-[27px] xl:text-[30px] font-bold tracking-tight leading-tight inline-block text-[#4472C4] dark:text-[#6893DF]">
+                <h1 className="text-xl sm:text-2xl lg:text-[27px] xl:text-[30px] font-bold tracking-tight leading-tight inline-block text-transparent bg-clip-text bg-gradient-to-r from-[#4472C4] to-[#548235]">
                   Welcome to Transvolt
                 </h1>
 
@@ -1012,7 +1012,7 @@ export const AboutPage = ({ currentSection = 0, onNavigate }) => {
 
               {/* Sub-heading: Who We Are */}
               <div className="pt-1">
-                <h2 className="text-xl sm:text-2xl lg:text-[27px] xl:text-[30px] font-bold tracking-tight leading-tight inline-block text-[#4472C4] dark:text-[#6893DF]">
+                <h2 className="text-xl sm:text-2xl lg:text-[27px] xl:text-[30px] font-bold tracking-tight leading-tight inline-block text-transparent bg-clip-text bg-gradient-to-r from-[#4472C4] to-[#548235]">
                   Who We Are
                 </h2>
               </div>
@@ -1749,12 +1749,8 @@ export const AboutPage = ({ currentSection = 0, onNavigate }) => {
                 </span>
               </div>
               
-              <h2 className="text-xl sm:text-2xl lg:text-[27px] xl:text-[30px] font-bold text-gray-900 dark:text-white tracking-tight leading-[1.14]">
-                Transvolt Plans to Be{' '}
-                <span className="text-[#548235] dark:text-[#72B347]">
-                  5,000+ Zero Emission
-                </span>{' '}
-                Vehicle Platform in Next 3 to 5 Years.
+              <h2 className="text-xl sm:text-2xl lg:text-[27px] xl:text-[30px] font-bold tracking-tight leading-[1.14] text-transparent bg-clip-text bg-gradient-to-r from-[#4472C4] to-[#548235]">
+                Transvolt Plans to Be 5,000+ Zero Emission Vehicle Platform in Next 3 to 5 Years.
               </h2>
             </div>
 
@@ -2001,7 +1997,7 @@ export const AboutPage = ({ currentSection = 0, onNavigate }) => {
                 
                 {/* Panel Header */}
                 <div className="flex items-center justify-between gap-2">
-                  <h2 className="text-xl sm:text-2xl lg:text-[27px] xl:text-[30px] font-bold text-gray-900 dark:text-white tracking-tight leading-tight">
+                  <h2 className="text-xl sm:text-2xl lg:text-[27px] xl:text-[30px] font-bold tracking-tight leading-tight text-transparent bg-clip-text bg-gradient-to-r from-[#4472C4] to-[#548235]">
                     Fleet Monitoring Applications
                   </h2>
 
@@ -2308,7 +2304,7 @@ export const AboutPage = ({ currentSection = 0, onNavigate }) => {
             
             {/* Main Section Header */}
             <div className="flex flex-col items-center text-center space-y-2 border-b border-gray-200/80 dark:border-white/10 pb-6">
-              <h2 className="text-xl sm:text-2xl lg:text-[27px] xl:text-[30px] font-bold text-gray-900 dark:text-white tracking-tight leading-tight">
+              <h2 className="text-xl sm:text-2xl lg:text-[27px] xl:text-[30px] font-bold tracking-tight leading-tight text-transparent bg-clip-text bg-gradient-to-r from-[#4472C4] to-[#548235]">
                 Our Team
               </h2>
               <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 max-w-xl">
@@ -2453,7 +2449,7 @@ export const AboutPage = ({ currentSection = 0, onNavigate }) => {
             
             {/* Header: Title & Description (Left Aligned) */}
             <div className="flex flex-col space-y-1.5 border-b border-gray-200/80 dark:border-white/10 pb-5">
-              <h2 className="text-xl sm:text-2xl lg:text-[27px] xl:text-[30px] font-bold text-gray-900 dark:text-white tracking-tight leading-tight">
+              <h2 className="text-xl sm:text-2xl lg:text-[27px] xl:text-[30px] font-bold tracking-tight leading-tight text-transparent bg-clip-text bg-gradient-to-r from-[#4472C4] to-[#548235]">
                 Our Partners
               </h2>
               <p className="text-xs sm:text-[13px] text-gray-600 dark:text-gray-400 max-w-3xl">

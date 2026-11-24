@@ -97,7 +97,7 @@ END:VCARD`;
             <span>Direct Connect • Powered Up</span>
           </div>
 
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-white drop-shadow-[0_4px_16px_rgba(0,0,0,0.85)] leading-tight">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[#4472C4] to-[#548235] drop-shadow-[0_4px_16px_rgba(0,0,0,0.85)] leading-tight">
             Get In Touch With Transvolt
           </h1>
           <p className="mt-1.5 text-xs sm:text-sm text-gray-300 max-w-lg mx-auto drop-shadow leading-snug">

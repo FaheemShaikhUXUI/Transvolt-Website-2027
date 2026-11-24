@@ -3,7 +3,7 @@ import { Sun, Moon, ArrowUpRight } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { VenomContactButton } from './VenomContactButton';
 
-export const Navbar = ({ onNavigate, isDarkBg = false, activePage = 'home' }) => {
+export const Navbar = ({ onNavigate, isDarkBg = false, activePage = 'home', introStage = 4 }) => {
   const { isDark, toggleTheme } = useTheme();
   const [autoDark, setAutoDark] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -144,7 +144,13 @@ export const Navbar = ({ onNavigate, isDarkBg = false, activePage = 'home' }) =>
   const effectiveIsDark = isDark || isDarkBg || autoDark;
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-40 py-6 pointer-events-none transition-all duration-300">
+    <header
+      className={`fixed top-0 left-0 right-0 z-40 py-6 pointer-events-none transition-all duration-700 ease-out transform ${
+        introStage >= 1
+          ? 'translate-y-0 opacity-100'
+          : '-translate-y-full opacity-0 pointer-events-none'
+      }`}
+    >
       {/* Pure Background Blur Without Any Fill Color (Completely Transparent Fill) */}
       <div
         className={`absolute inset-x-0 top-0 h-[88px] sm:h-[98px] pointer-events-none transition-opacity duration-300 ease-out ${
@@ -196,7 +202,7 @@ export const Navbar = ({ onNavigate, isDarkBg = false, activePage = 'home' }) =>
             onPlugConnect={() => onNavigate && onNavigate('contact-qr')}
             label="Contact Us"
             isDarkBg={effectiveIsDark}
-            hidePlug={activePage === 'contact' || activePage === 'contact-qr' || activePage === 'home'}
+            hidePlug={activePage === 'contact' || activePage === 'contact-qr' || introStage < 1}
           />
 
           {/* Super Glassmorphism Theme Toggle Button */}

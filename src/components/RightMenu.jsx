@@ -15,7 +15,7 @@ import {
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 
-export const RightMenu = ({ activeMenuId = 'home', onNavigate, isDarkBg = false }) => {
+export const RightMenu = ({ activeMenuId = 'home', onNavigate, isDarkBg = false, introStage = 4 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { isDark } = useTheme();
   const [autoDark, setAutoDark] = useState(false);
@@ -130,7 +130,11 @@ export const RightMenu = ({ activeMenuId = 'home', onNavigate, isDarkBg = false 
   return (
     <div
       ref={menuContainerRef}
-      className="fixed right-0 top-1/2 -translate-y-1/2 z-40 transition-all duration-300 flex items-center"
+      className={`fixed right-0 top-1/2 -translate-y-1/2 z-40 transition-all duration-700 ease-out flex items-center transform ${
+        introStage >= 1
+          ? 'translate-x-0 opacity-100'
+          : 'translate-x-full opacity-0 pointer-events-none'
+      }`}
       onMouseEnter={() => setIsOpen(true)}
       onMouseLeave={() => setIsOpen(false)}
     >

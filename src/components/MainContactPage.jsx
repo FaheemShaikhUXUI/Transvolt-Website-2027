@@ -269,11 +269,8 @@ export const MainContactPage = ({ onNavigate }) => {
                   <span>Connect With Transvolt</span>
                 </div>
 
-                <h1 className="text-2xl sm:text-4xl lg:text-5xl font-semibold tracking-tight leading-[1.15] text-white drop-shadow-xl">
-                  Let&apos;s Accelerate the<br />
-                  <span className="text-[#548235] text-transparent bg-clip-text bg-gradient-to-r from-[#548235] via-[#66b338] to-[#22c55e]">
-                    EV Revolution
-                  </span>
+                <h1 className="text-2xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-[1.15] text-transparent bg-clip-text bg-gradient-to-r from-[#4472C4] to-[#548235] drop-shadow-xl">
+                  Let&apos;s Accelerate the EV Revolution
                 </h1>
 
                 <p className="mt-2.5 sm:mt-3 text-xs sm:text-sm lg:text-[15px] leading-relaxed text-gray-200 font-normal drop-shadow-md max-w-xl">

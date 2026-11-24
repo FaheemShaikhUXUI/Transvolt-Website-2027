@@ -19,7 +19,7 @@ export const TRANSVOLT_FIRSTS = [
     category: 'Public Transit Concessions',
     title: 'First Dedicated Long-Term Municipal GCC Electric Bus Operations in MMR',
     tagline: 'De-risking municipal electrification through asset ownership, depot charging, and performance-linked SLA delivery.',
-    year: '2022',
+    year: '2023',
     iconName: 'Bus',
     highlightBadge: 'HISTORIC MILESTONE',
     overview:

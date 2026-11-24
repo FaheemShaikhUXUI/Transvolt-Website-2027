@@ -656,11 +656,8 @@ export const GovernancePage = ({ onNavigate }) => {
                   <span>Institutional Integrity & Compliance</span>
                 </div>
 
-                <h1 className="text-2xl sm:text-4xl lg:text-5xl font-semibold tracking-tight leading-[1.15] text-white drop-shadow-xl">
-                  Governance Built on<br />
-                  <span className="text-[#548235] text-transparent bg-clip-text bg-gradient-to-r from-[#548235] via-[#66b338] to-[#22c55e]">
-                    Accountability & Trust
-                  </span>
+                <h1 className="text-2xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-[1.15] text-transparent bg-clip-text bg-gradient-to-r from-[#4472C4] to-[#548235] drop-shadow-xl">
+                  Governance Built on Accountability &amp; Trust
                 </h1>
 
                 <p className="mt-2.5 sm:mt-3 text-xs sm:text-sm lg:text-[15px] leading-relaxed text-gray-200 font-normal drop-shadow-md max-w-xl">

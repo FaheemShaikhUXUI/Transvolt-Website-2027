@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import {
   Film,
   Play,
@@ -492,119 +492,220 @@ export const ServicesPage = ({ onNavigate }) => {
   };
 
   const oemScrollRef = useRef(null);
+  const [isOemHovered, setIsOemHovered] = useState(false);
+  const oemHoverRef = useRef(false);
+  oemHoverRef.current = isOemHovered;
+
+  // Triplicate OEM list for infinite seamless loop
+  const infiniteOemPartners = useMemo(
+    () => [...oemFleetPartners, ...oemFleetPartners, ...oemFleetPartners],
+    []
+  );
+
+  // Smooth continuous right-to-left scrolling loop (pauses on hover)
+  useEffect(() => {
+    const el = oemScrollRef.current;
+    if (!el) return;
+
+    let animId = null;
+    let lastTime = performance.now();
+    const speed = 40; // 40px/s continuous smooth speed
+
+    // Initialize position to the middle set
+    const initScroll = () => {
+      const singleWidth = el.scrollWidth / 3;
+      if (singleWidth > 0 && el.scrollLeft < 20) {
+        el.scrollLeft = singleWidth;
+      }
+    };
+    initScroll();
+    const timer = setTimeout(initScroll, 100);
+
+    const step = (now) => {
+      const dt = Math.min(0.1, (now - lastTime) / 1000);
+      lastTime = now;
+
+      if (!oemHoverRef.current && el) {
+        el.scrollLeft += speed * dt;
+
+        const singleWidth = el.scrollWidth / 3;
+        if (singleWidth > 0) {
+          if (el.scrollLeft >= singleWidth * 2) {
+            el.scrollLeft -= singleWidth;
+          } else if (el.scrollLeft <= 10) {
+            el.scrollLeft += singleWidth;
+          }
+        }
+      }
+
+      animId = requestAnimationFrame(step);
+    };
+
+    animId = requestAnimationFrame(step);
+
+    return () => {
+      clearTimeout(timer);
+      if (animId) cancelAnimationFrame(animId);
+    };
+  }, []);
 
   const scrollOem = (direction) => {
     if (oemScrollRef.current) {
-      const scrollAmount = direction === 'left' ? -320 : 320;
-      oemScrollRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+      const el = oemScrollRef.current;
+      const scrollAmount = direction === 'left' ? -315 : 315;
+      el.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+
+      // Wrap check after smooth scroll completes
+      setTimeout(() => {
+        if (!el) return;
+        const singleWidth = el.scrollWidth / 3;
+        if (singleWidth > 0) {
+          if (el.scrollLeft >= singleWidth * 2) {
+            el.scrollLeft -= singleWidth;
+          } else if (el.scrollLeft < singleWidth * 0.5) {
+            el.scrollLeft += singleWidth;
+          }
+        }
+      }, 350);
     }
   };
 
-  // Gradient Edge Fade Mask: 0% Opacity near ends for cards extending outside
-  const [oemMask, setOemMask] = useState({ left: false, right: true });
-
-  const handleOemScroll = () => {
-    if (!oemScrollRef.current) return;
-    const { scrollLeft, scrollWidth, clientWidth } = oemScrollRef.current;
-    const canLeft = scrollLeft > 8;
-    const canRight = scrollLeft < scrollWidth - clientWidth - 8;
-    setOemMask((prev) => {
-      if (prev.left === canLeft && prev.right === canRight) return prev;
-      return { left: canLeft, right: canRight };
-    });
-  };
-
-  // Charger Partners Carousel Ref & Scroll
+  // Charger Partners Continuous Smooth Scrolling (OPPOSITE DIRECTION: left-to-right, pauses on hover)
   const chargerScrollRef = useRef(null);
-  const [chargerMask, setChargerMask] = useState({ left: false, right: true });
+  const [isChargerHovered, setIsChargerHovered] = useState(false);
+  const chargerHoverRef = useRef(false);
+  chargerHoverRef.current = isChargerHovered;
+
+  useEffect(() => {
+    const el = chargerScrollRef.current;
+    if (!el) return;
+
+    let animId = null;
+    let lastTime = performance.now();
+    const speed = 40; // 40px/s continuous smooth speed
+
+    // Initialize position to the middle set so it can scroll backwards (left-to-right) immediately
+    const initScroll = () => {
+      const singleWidth = el.scrollWidth / 3;
+      if (singleWidth > 0 && el.scrollLeft < 20) {
+        el.scrollLeft = singleWidth;
+      }
+    };
+    initScroll();
+    const timer = setTimeout(initScroll, 100);
+
+    const step = (now) => {
+      const dt = Math.min(0.1, (now - lastTime) / 1000);
+      lastTime = now;
+
+      // Runs in OPPOSITE direction (left-to-right: scrollLeft decreases)
+      if (!chargerHoverRef.current && el) {
+        el.scrollLeft -= speed * dt;
+
+        const singleWidth = el.scrollWidth / 3;
+        if (singleWidth > 0) {
+          if (el.scrollLeft <= 10) {
+            el.scrollLeft += singleWidth;
+          } else if (el.scrollLeft >= singleWidth * 2) {
+            el.scrollLeft -= singleWidth;
+          }
+        }
+      }
+
+      animId = requestAnimationFrame(step);
+    };
+
+    animId = requestAnimationFrame(step);
+
+    return () => {
+      clearTimeout(timer);
+      if (animId) cancelAnimationFrame(animId);
+    };
+  }, []);
 
   const scrollCharger = (direction) => {
     if (chargerScrollRef.current) {
-      const scrollAmount = direction === 'left' ? -290 : 290;
-      chargerScrollRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+      const el = chargerScrollRef.current;
+      const scrollAmount = direction === 'left' ? -285 : 285;
+      el.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+
+      // Wrap check after smooth scroll completes
+      setTimeout(() => {
+        if (!el) return;
+        const singleWidth = el.scrollWidth / 3;
+        if (singleWidth > 0) {
+          if (el.scrollLeft <= 10) {
+            el.scrollLeft += singleWidth;
+          } else if (el.scrollLeft >= singleWidth * 2) {
+            el.scrollLeft -= singleWidth;
+          }
+        }
+      }, 350);
     }
   };
 
-  const handleChargerScroll = () => {
-    if (!chargerScrollRef.current) return;
-    const { scrollLeft, scrollWidth, clientWidth } = chargerScrollRef.current;
-    const canLeft = scrollLeft > 8;
-    const canRight = scrollLeft < scrollWidth - clientWidth - 8;
-    setChargerMask((prev) => {
-      if (prev.left === canLeft && prev.right === canRight) return prev;
-      return { left: canLeft, right: canRight };
-    });
-  };
-
-  useEffect(() => {
-    handleOemScroll();
-    handleChargerScroll();
-    const handleResize = () => {
-      handleOemScroll();
-      handleChargerScroll();
-    };
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  const getChargerMaskStyle = () => {
-    const fadeDistance = '56px';
-    if (chargerMask.left && chargerMask.right) {
-      return {
-        WebkitMaskImage: `linear-gradient(to right, transparent 0%, black ${fadeDistance}, black calc(100% - ${fadeDistance}), transparent 100%)`,
-        maskImage: `linear-gradient(to right, transparent 0%, black ${fadeDistance}, black calc(100% - ${fadeDistance}), transparent 100%)`,
-      };
-    }
-    if (chargerMask.left && !chargerMask.right) {
-      return {
-        WebkitMaskImage: `linear-gradient(to right, transparent 0%, black ${fadeDistance}, black 100%)`,
-        maskImage: `linear-gradient(to right, transparent 0%, black ${fadeDistance}, black 100%)`,
-      };
-    }
-    if (!chargerMask.left && chargerMask.right) {
-      return {
-        WebkitMaskImage: `linear-gradient(to right, black 0%, black calc(100% - ${fadeDistance}), transparent 100%)`,
-        maskImage: `linear-gradient(to right, black 0%, black calc(100% - ${fadeDistance}), transparent 100%)`,
-      };
-    }
-    return {};
-  };
-
-  const getOemMaskStyle = () => {
-    const fadeDistance = '64px';
-    if (oemMask.left && oemMask.right) {
-      return {
-        WebkitMaskImage: `linear-gradient(to right, transparent 0%, black ${fadeDistance}, black calc(100% - ${fadeDistance}), transparent 100%)`,
-        maskImage: `linear-gradient(to right, transparent 0%, black ${fadeDistance}, black calc(100% - ${fadeDistance}), transparent 100%)`,
-      };
-    }
-    if (oemMask.left && !oemMask.right) {
-      return {
-        WebkitMaskImage: `linear-gradient(to right, transparent 0%, black ${fadeDistance}, black 100%)`,
-        maskImage: `linear-gradient(to right, transparent 0%, black ${fadeDistance}, black 100%)`,
-      };
-    }
-    if (!oemMask.left && oemMask.right) {
-      return {
-        WebkitMaskImage: `linear-gradient(to right, black 0%, black calc(100% - ${fadeDistance}), transparent 100%)`,
-        maskImage: `linear-gradient(to right, black 0%, black calc(100% - ${fadeDistance}), transparent 100%)`,
-      };
-    }
-    return {};
-  };
-
-  // Concessioning Authorities & Esteemed Clients (from transvolt.in/services)
+  // Concessioning Authorities & Industrial Customers (10 Strategic Partners across 2 Rows)
   const clients = [
-    { name: 'Mira Bhaindar Municipal Corp.', role: 'Concessioning Authority' },
-    { name: 'Ulhasnagar Municipal Corp.', role: 'Concessioning Authority' },
-    { name: 'Nagpur Municipal Corp.', role: 'Concessioning Authority' },
-    { name: 'Tata Steel', role: 'Heavy EV Fleet Customer' },
-    { name: 'UltraTech Cement', role: 'Raw Material Transit' },
-    { name: 'Jindal Steel Limited (JSL)', role: 'Zero-Emission Logistics' },
-    { name: 'J M Baxi Ports & Logistics', role: 'Port EV Fleet Concession' },
-    { name: 'PSA Singapore Authority', role: 'Container Freight Movement' },
-    { name: 'Star Cement', role: 'Limestone Supply Chain' },
-    { name: 'Wonder Cement', role: 'Bulk Cement Logistics' },
+    {
+      name: 'Mira Bhaindar Municipal Corp.',
+      role: 'Concessioning Authority',
+      type: 'Long-Term Electric Bus Concession',
+      logo: '/assets/MBMT-Partner-BsD9v2dv.png',
+    },
+    {
+      name: 'Ulhasnagar Municipal Corp.',
+      role: 'Concessioning Authority',
+      type: 'Urban EV Transit Concession',
+      logo: '/assets/Ulhasnagar_Partner-e4_LykLY.png',
+    },
+    {
+      name: 'Nagpur Municipal Corp.',
+      role: 'Concessioning Authority',
+      type: 'Municipal Electric Bus Network',
+      logo: '/assets/nagpur_municipal-DS8y9ERm.jpg',
+    },
+    {
+      name: 'Tata Steel',
+      role: 'Heavy EV Fleet Customer',
+      type: 'Industrial Zero-Emission Haulage',
+      logo: '/assets/TATA_STEEL-6kZtckyK.svg',
+    },
+    {
+      name: 'UltraTech Cement',
+      role: 'Raw Material Transit',
+      type: 'Heavy 55-Ton Electric Prime Movers',
+      logo: '/assets/ultratech_cement_logo-EAFihHtx.png',
+    },
+    {
+      name: 'Jindal Steel Limited (JSL)',
+      role: 'Zero-Emission Logistics',
+      type: 'Continuous Heavy Steel Transport',
+      logo: '/assets/Jindal_Steel-Bh7b9jw1.png',
+    },
+    {
+      name: 'J M Baxi Ports & Logistics',
+      role: 'Port EV Fleet Concession',
+      type: 'Container Terminal Electrification',
+      logo: '/assets/jm-main-logo-CVd1H-7Z.svg',
+    },
+    {
+      name: 'PSA Singapore Authority',
+      role: 'Container Freight Movement',
+      type: 'Port Terminal Heavy Haulage',
+      logo: '/assets/PSA-0jgLuCXH.jpg',
+    },
+    {
+      name: 'Star Cement',
+      role: 'Limestone Supply Chain',
+      type: 'Mining & Quarry EV Logistics',
+      logo: '/assets/StarCement-BNa6w9Cl.jpg',
+    },
+    {
+      name: 'Wonder Cement',
+      role: 'Bulk Cement Logistics',
+      type: 'Industrial Freight Transit',
+      logo: '/assets/wonder_cement_logo.svg',
+    },
   ];
 
   // Depot Fast-Charging & Infrastructure Partners with Authentic Deployment Data
@@ -692,6 +793,12 @@ export const ServicesPage = ({ onNavigate }) => {
     },
   ];
 
+  // Triplicate Charger list for infinite seamless loop in opposite direction
+  const infiniteChargerPartners = useMemo(
+    () => [...chargerFleetPartners, ...chargerFleetPartners, ...chargerFleetPartners],
+    []
+  );
+
   // Fleet Monitoring Application Core Capabilities
   const fleetCapabilities = [
     {
@@ -739,12 +846,8 @@ export const ServicesPage = ({ onNavigate }) => {
 
             {/* Main Header (from Image 1) */}
             <div className="space-y-2">
-              <h1 className="text-3xl sm:text-4xl lg:text-[42px] font-bold tracking-tight leading-[1.15] text-gray-950 dark:text-white">
-                Transvolt's{' '}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#548235] to-[#2e7d32] dark:from-[#72B347] dark:to-[#4ade80]">
-                  Zero Emission
-                </span>{' '}
-                Platform
+              <h1 className="text-3xl sm:text-4xl lg:text-[42px] font-bold tracking-tight leading-[1.15] text-transparent bg-clip-text bg-gradient-to-r from-[#4472C4] to-[#548235]">
+                Transvolt&apos;s Zero Emission Platform
               </h1>
               <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 font-medium">
                 Integrated B2G, B2B, and B2C commercial e-mobility infrastructure for India.
@@ -982,7 +1085,7 @@ export const ServicesPage = ({ onNavigate }) => {
           {/* Compact Section Header */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-1 border-b border-gray-200/60 dark:border-white/10">
             <div className="space-y-1 max-w-2xl">
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight">
+              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[#4472C4] to-[#548235]">
                 Solutions Engineered for Scale
               </h2>
             </div>
@@ -1157,6 +1260,63 @@ export const ServicesPage = ({ onNavigate }) => {
             </div>
           </div>
 
+          {/* ========================================================================= */}
+          {/* CONCESSIONING AUTHORITIES & INDUSTRIAL CUSTOMERS (ABOVE OEM PARTNER - STATIC 2 ROWS) */}
+          {/* ========================================================================= */}
+          <div id="concessioning-authorities-anchor" className="space-y-4 pt-6 border-t border-gray-200/60 dark:border-white/10">
+            {/* Header */}
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
+              <div>
+                <span className="text-[10px] font-mono font-bold text-[#548235] dark:text-[#72B347] uppercase tracking-widest flex items-center gap-1.5">
+                  <Building2 className="w-3.5 h-3.5" />
+                  OPERATIONAL FLEET FOOTPRINT
+                </span>
+                <h3 className="text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight leading-tight">
+                  Concessioning Authorities &amp; Industrial Customers
+                </h3>
+                <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-1 max-w-2xl">
+                  Trusted partner powering long-term municipal public transit concessions and heavy commercial EV industrial supply chains across India.
+                </p>
+              </div>
+
+              <span className="text-[11px] font-mono font-semibold text-[#548235] dark:text-[#72B347] px-3 py-1 rounded-full bg-[#548235]/10 border border-[#548235]/20 self-start sm:self-end">
+                10+ Major Municipal &amp; Industrial Concessions
+              </span>
+            </div>
+
+            {/* Static 2-Row Grid (5 Tiles Per Row on Desktop) with Corrected UI */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-3.5 pt-1">
+              {clients.map((item, idx) => (
+                <div
+                  key={idx}
+                  className="p-3 sm:p-3.5 rounded-2xl bg-white dark:bg-[#0D1525] border border-gray-200/90 dark:border-white/10 shadow-xs hover:shadow-md hover:border-[#548235]/60 transition-all duration-200 flex items-center gap-3 group hover:-translate-y-0.5"
+                >
+                  {/* Logo on Left Side (Contained and Scaled) */}
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 min-w-[48px] min-h-[48px] sm:min-w-[56px] sm:min-h-[56px] rounded-xl bg-slate-50 dark:bg-white/[0.06] border border-gray-100 dark:border-white/10 flex items-center justify-center p-2 shrink-0 overflow-hidden shadow-2xs">
+                    <img
+                      src={item.logo}
+                      alt={item.name}
+                      className="max-h-full max-w-full w-auto h-auto object-contain filter drop-shadow-2xs transition-transform duration-300 group-hover:scale-105"
+                    />
+                  </div>
+
+                  {/* Bold Title on Right Side + Supporting Thin Text Bellow */}
+                  <div className="flex flex-col justify-center min-w-0 pr-0.5">
+                    <h4 className="text-xs sm:text-[13px] font-extrabold text-gray-900 dark:text-white leading-snug group-hover:text-[#548235] dark:group-hover:text-[#72B347] transition-colors line-clamp-1" title={item.name}>
+                      {item.name}
+                    </h4>
+                    <p className="text-[11px] sm:text-xs font-semibold text-[#548235] dark:text-[#72B347] leading-tight mt-0.5 truncate">
+                      {item.role}
+                    </p>
+                    <span className="text-[9.5px] font-mono text-gray-400 dark:text-gray-400 block mt-0.5 truncate">
+                      {item.type}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
           {/* OEM PARTNERS SECTION WITH GENEROUS BREATHING SPACE & CAPSULE ARROWS */}
           <div id="oem-partners-spec-anchor" className="space-y-4 pt-6 border-t border-gray-200/60 dark:border-white/10">
             {/* Headline and Controls */}
@@ -1175,7 +1335,11 @@ export const ServicesPage = ({ onNavigate }) => {
             </div>
 
             {/* Carousel Container with Small Vertical Capsule Arrows */}
-            <div className="relative group/carousel">
+            <div
+              className="relative group/carousel"
+              onMouseEnter={() => setIsOemHovered(true)}
+              onMouseLeave={() => setIsOemHovered(false)}
+            >
               {/* Left Vertical Capsule Arrow (Floating on track edge) */}
               <button
                 onClick={() => scrollOem('left')}
@@ -1185,17 +1349,21 @@ export const ServicesPage = ({ onNavigate }) => {
                 <ChevronLeft className="w-3.5 h-3.5" />
               </button>
 
-              {/* Scrollable Track with Gradient Edge Fade Mask & Frameless Minimalist Scrollbar */}
+              {/* Scrollable Track with Gradient Edge Fade Mask & Zero Scrollbar */}
               <div
                 ref={oemScrollRef}
-                onScroll={handleOemScroll}
-                style={getOemMaskStyle()}
-                className="flex items-stretch gap-4 sm:gap-5 overflow-x-auto clean-scrollbar scroll-smooth pt-2 pb-4 px-1 snap-x snap-mandatory"
+                style={{
+                  WebkitMaskImage:
+                    'linear-gradient(to right, transparent 0%, black 48px, black calc(100% - 48px), transparent 100%)',
+                  maskImage:
+                    'linear-gradient(to right, transparent 0%, black 48px, black calc(100% - 48px), transparent 100%)',
+                }}
+                className="flex items-stretch gap-4 sm:gap-5 overflow-x-auto no-scrollbar scrollbar-none [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] pt-2 pb-4 px-1 select-none"
               >
-                {oemFleetPartners.map((oem, idx) => (
+                {infiniteOemPartners.map((oem, idx) => (
                   <div
                     key={idx}
-                    className="w-[270px] sm:w-[295px] shrink-0 snap-start bg-white dark:bg-[#0D1525] rounded-2xl border border-gray-200/90 dark:border-white/10 p-5 shadow-sm hover:shadow-xl hover:border-[#548235]/50 transition-all duration-300 flex flex-col justify-between group hover:-translate-y-1"
+                    className="w-[270px] sm:w-[295px] shrink-0 bg-white dark:bg-[#0D1525] rounded-2xl border border-gray-200/90 dark:border-white/10 p-5 shadow-sm hover:shadow-xl hover:border-[#548235]/50 transition-all duration-300 flex flex-col justify-between group hover:-translate-y-1"
                   >
                     <div className="space-y-4">
                       {/* Vehicle Showcase Image Box */}
@@ -1281,7 +1449,11 @@ export const ServicesPage = ({ onNavigate }) => {
             </div>
 
             {/* Charger Partners Carousel with Floating Edge Capsule Arrows & Gradient Mask */}
-            <div className="relative group/chargerCarousel">
+            <div
+              className="relative group/chargerCarousel"
+              onMouseEnter={() => setIsChargerHovered(true)}
+              onMouseLeave={() => setIsChargerHovered(false)}
+            >
               {/* Left Vertical Capsule Arrow */}
               <button
                 onClick={() => scrollCharger('left')}
@@ -1291,17 +1463,21 @@ export const ServicesPage = ({ onNavigate }) => {
                 <ChevronLeft className="w-3.5 h-3.5" />
               </button>
 
-              {/* Scrollable Track with Gradient Edge Fade Mask & Frameless Minimalist Scrollbar */}
+              {/* Scrollable Track with Gradient Edge Fade Mask & Zero Scrollbar */}
               <div
                 ref={chargerScrollRef}
-                onScroll={handleChargerScroll}
-                style={getChargerMaskStyle()}
-                className="flex items-stretch gap-4 sm:gap-5 overflow-x-auto clean-scrollbar scroll-smooth pt-2 pb-4 px-1 snap-x snap-mandatory"
+                style={{
+                  WebkitMaskImage:
+                    'linear-gradient(to right, transparent 0%, black 48px, black calc(100% - 48px), transparent 100%)',
+                  maskImage:
+                    'linear-gradient(to right, transparent 0%, black 48px, black calc(100% - 48px), transparent 100%)',
+                }}
+                className="flex items-stretch gap-4 sm:gap-5 overflow-x-auto no-scrollbar scrollbar-none [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] pt-2 pb-4 px-1 select-none"
               >
-                {chargerFleetPartners.map((cp, idx) => (
+                {infiniteChargerPartners.map((cp, idx) => (
                   <div
                     key={idx}
-                    className="w-[245px] sm:w-[265px] shrink-0 snap-start bg-[#F2F8F0] dark:bg-[#0A150F] rounded-2xl border border-[#548235]/25 dark:border-[#548235]/35 p-4 sm:p-4.5 shadow-sm hover:shadow-xl hover:border-[#548235] hover:shadow-[#548235]/10 transition-all duration-300 flex flex-col justify-between group hover:-translate-y-1 relative overflow-hidden"
+                    className="w-[245px] sm:w-[265px] shrink-0 bg-[#F2F8F0] dark:bg-[#0A150F] rounded-2xl border border-[#548235]/25 dark:border-[#548235]/35 p-4 sm:p-4.5 shadow-sm hover:shadow-xl hover:border-[#548235] hover:shadow-[#548235]/10 transition-all duration-300 flex flex-col justify-between group hover:-translate-y-1 relative overflow-hidden"
                   >
                     {/* Top Subtle Hover Accent Line */}
                     <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#548235] to-[#4472C4] opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -1376,7 +1552,7 @@ export const ServicesPage = ({ onNavigate }) => {
           {/* Section Header: Uniform with Section 2 */}
           <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 pb-2 border-b border-gray-200/60 dark:border-white/10">
             <div className="space-y-1 max-w-3xl">
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight">
+              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[#4472C4] to-[#548235]">
                 Fleet Monitoring Applications
               </h2>
               <p className="text-xs sm:text-[13px] text-gray-500 dark:text-gray-400 leading-relaxed">
@@ -1510,39 +1686,6 @@ export const ServicesPage = ({ onNavigate }) => {
                   Custom EV Telematics Demo
                 </span>
               </div>
-            </div>
-          </div>
-
-          {/* Esteemed Customers & Municipal Authorities */}
-          <div className="space-y-4 pt-2">
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-gray-200/60 dark:border-white/10 pb-3">
-              <div>
-                <span className="text-[10px] font-mono font-bold text-[#548235] dark:text-[#72B347] uppercase tracking-wider">
-                  OPERATIONAL FLEET FOOTPRINT
-                </span>
-                <h3 className="text-lg sm:text-xl font-bold text-gray-950 dark:text-white">
-                  Concessioning Authorities &amp; Industrial Customers
-                </h3>
-              </div>
-              <span className="text-xs font-mono text-gray-500 dark:text-gray-400">
-                10+ Major Municipal &amp; Industrial Concessions
-              </span>
-            </div>
-
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
-              {clients.map((c) => (
-                <div
-                  key={c.name}
-                  className="p-3.5 rounded-xl bg-white dark:bg-[#0D1525] border border-gray-200/80 dark:border-white/10 shadow-sm flex flex-col justify-between text-center space-y-1.5 hover:border-[#548235] transition-colors"
-                >
-                  <p className="text-xs font-bold text-gray-900 dark:text-white leading-tight">
-                    {c.name}
-                  </p>
-                  <p className="text-[10px] font-mono text-[#548235] dark:text-[#72B347]">
-                    {c.role}
-                  </p>
-                </div>
-              ))}
             </div>
           </div>
 

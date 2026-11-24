@@ -191,12 +191,9 @@ export const LifePage = ({ onNavigate }) => {
               <span>{LIFE_METADATA.badge}</span>
             </div>
 
-            {/* Headline: Less Bold & Single Line */}
+            {/* Headline: Clean White */}
             <h1 className="text-2xl sm:text-4xl lg:text-[44px] xl:text-5xl font-bold tracking-tight leading-tight text-white drop-shadow-[0_2px_14px_rgba(0,0,0,0.95)]">
-              <span>Powering Purpose.</span>{' '}
-              <span className="text-[#548235] text-transparent bg-clip-text bg-gradient-to-r from-[#548235] via-[#66b338] to-[#22c55e]">
-                Driving Tomorrow.
-              </span>
+              Powering Purpose. Driving Tomorrow.
             </h1>
 
             {/* Supporting Text Directly Below Headline */}

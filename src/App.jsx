@@ -58,6 +58,43 @@ function AppContent() {
     return 'home';
   }); // 'home' (Home Page 2) | 'home-v1' (Home Page 1) | 'about' | 'brand-assets' | 'services' | 'news' | 'governance' | 'contact' | 'contact-qr' | 'work' | 'life' | 'journey' | 'first' | 'hiring-process'
   const [currentPage, setCurrentPage] = useState(0);
+
+  // Orchestrated Entrance Animation for Home Page (Slide 0)
+  // Stage 0: Pure background video only
+  // Stage 1: Header drops from top + Right Menu enters from right + Left stepper
+  // Stage 2: Bottom metric tiles glide up from bottom
+  // Stage 3: Left text content enters line-by-line from below + Slider tiles enter from left
+  // Stage 4: Completed
+  const [introStage, setIntroStage] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const page = params.get('page');
+      const hash = window.location.hash;
+      if ((page && page !== 'home' && page !== 'home-v2') || (hash && hash !== '#home' && hash !== '#home-v2' && hash !== '')) {
+        return 4;
+      }
+    }
+    return 0;
+  });
+
+  useEffect(() => {
+    if (activePage !== 'home' || currentPage !== 0) {
+      setIntroStage(4);
+      return;
+    }
+
+    const t1 = setTimeout(() => setIntroStage((s) => (s < 1 ? 1 : s)), 900);
+    const t2 = setTimeout(() => setIntroStage((s) => (s < 2 ? 2 : s)), 1450);
+    const t3 = setTimeout(() => setIntroStage((s) => (s < 3 ? 3 : s)), 1900);
+    const t4 = setTimeout(() => setIntroStage((s) => (s < 4 ? 4 : s)), 3400);
+
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+      clearTimeout(t4);
+    };
+  }, [activePage, currentPage]);
   const [aboutSection, setAboutSection] = useState(0); // 0: 'Who We Are', 1: 'Our Presence'
   const [aboutFooterOpen, setAboutFooterOpen] = useState(false);
   const [servicesSection, setServicesSection] = useState(0);
@@ -627,6 +664,7 @@ function AppContent() {
           activePage={activePage}
           onNavigate={handleNavigation}
           isDarkBg={isDark || (activePage === 'home' && currentPage === 0) || (activePage === 'about' && aboutSection === 4) || activePage === 'contact-qr'}
+          introStage={introStage}
         />
       )}
 
@@ -636,12 +674,18 @@ function AppContent() {
           activeMenuId={activePage}
           onNavigate={handleNavigation}
           isDarkBg={isDark || (activePage === 'home' && currentPage === 0) || (activePage === 'about' && aboutSection === 4) || activePage === 'contact-qr'}
+          introStage={introStage}
         />
       )}
 
       {/* Universal Left Vertical Section Stepper */}
       {(activePage === 'home' || activePage === 'home-v1' || activePage === 'about' || activePage === 'services') && (
-        <nav aria-label="Page Sections Navigation" className="fixed left-3 sm:left-5 lg:left-6 top-1/2 -translate-y-1/2 z-30 flex flex-col items-center justify-center gap-2.5 pointer-events-auto">
+        <nav
+          aria-label="Page Sections Navigation"
+          className={`fixed left-3 sm:left-5 lg:left-6 top-1/2 -translate-y-1/2 z-30 flex flex-col items-center justify-center gap-2.5 pointer-events-auto transition-all duration-700 ease-out transform ${
+            introStage >= 1 ? 'translate-x-0 opacity-100' : '-translate-x-12 opacity-0 pointer-events-none'
+          }`}
+        >
           {(() => {
             const config = {
               home: {
@@ -736,7 +780,7 @@ function AppContent() {
           {/* Main Home Presentation (Slides 0, 1, 2) - Never Squeezed */}
           <main className="w-full h-screen overflow-hidden relative">
             {activePage === 'home' ? (
-              <HomePageV2 currentPage={Math.min(currentPage, 2)} onNavigate={handleNavigation} />
+              <HomePageV2 currentPage={Math.min(currentPage, 2)} onNavigate={handleNavigation} introStage={introStage} />
             ) : (
               <HomePage currentPage={Math.min(currentPage, 2)} onNavigate={handleNavigation} />
             )}

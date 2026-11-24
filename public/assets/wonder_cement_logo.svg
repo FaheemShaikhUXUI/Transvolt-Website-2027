@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 100" fill="none">
+  <!-- Wonder Cement Emblem -->
+  <g transform="translate(10, 10)">
+    <!-- Red diamond shield -->
+    <path d="M40 0 L80 40 L40 80 L0 40 Z" fill="#E31E24" />
+    <!-- Stylized W in white -->
+    <path d="M18 26 L28 58 L40 38 L52 58 L62 26 L53 26 L46 48 L40 38 L34 48 L27 26 Z" fill="#FFFFFF" />
+  </g>
+  <!-- Brand Typography -->
+  <text x="100" y="48" font-family="'Inter', 'Arial Black', sans-serif" font-weight="900" font-size="28" fill="#E31E24" letter-spacing="1">WONDER</text>
+  <text x="100" y="74" font-family="'Inter', 'Arial Black', sans-serif" font-weight="800" font-size="21" fill="#1A365D" letter-spacing="2">CEMENT</text>
+</svg>
